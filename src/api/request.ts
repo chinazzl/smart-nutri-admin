@@ -14,6 +14,7 @@ const service: AxiosInstance = axios.create({
 // 请求拦截器
 service.interceptors.request.use(
   (config) => {
+    console.log("请求配置：", config)
     // 从 localStorage 获取 token
     const token = localStorage.getItem('userToken');
     
@@ -64,6 +65,7 @@ service.interceptors.response.use(
     }
     
     // 返回数据
+    console.log("响应数据：", res)
     return res.data;
   },
   (error) => {
@@ -89,6 +91,7 @@ export const get = <T = any>(url: string, config?: AxiosRequestConfig): Promise<
 
 // 封装 POST 请求
 export const post = <T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> => {
+  console.log("POST 请求 URL:", url, "数据:", data, "配置:", config);
   return service.post(url, data, config);
 };
 

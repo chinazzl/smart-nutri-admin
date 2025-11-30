@@ -6,7 +6,7 @@ import { ElMessage } from 'element-plus';
 
 export interface UserInfo {
   id: string;
-  username: string;
+  userName: string;
   avatar?: string;
   email?: string;
   phone?: string;
@@ -36,8 +36,8 @@ export const useUserStore = defineStore('user', () => {
       const res = await loginApi(loginParams);
       
       // 保存 token 和用户信息
-      setToken(res.token);
-      setUserInfo(res.userInfo);
+      setToken(res.accessToken);
+      setUserInfo(res.userData.userVo);
       
       ElMessage.success('登录成功');
       

@@ -13,8 +13,8 @@
 
       <el-dropdown trigger="click">
         <span class="el-dropdown-link">
-          <el-avatar :size="30" src="https://cube.elemecdn.com/0/88/d8e7cbe79b76c0e5a8f4c3c3a44d0webp.webp" />
-          <span class="username">Alex </span>
+          <el-avatar :size="30" :src="userStore.userInfo?.avatar || 'https://cube.elemecdn.com/0/88/d8e7cbe79b76c0e5a8f4c3c3a44d0webp.webp'" />
+          <span class="username">{{ userStore.userInfo?.userName || 'User' }} </span>
           <el-icon class="el-icon--right"><ArrowDown /></el-icon>
         </span>
         <template #dropdown>
@@ -30,11 +30,12 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter, useRoute } from 'vue-router';
-import { ElMessage, ElMessageBox } from 'element-plus';
+import { useRoute } from 'vue-router';
+import { useUserStore } from '@/stores/user';
+import { ElMessageBox } from 'element-plus';
 
-const router = useRouter();
 const route = useRoute();
+const userStore = useUserStore();
 
 const logout = () => {
   ElMessageBox.confirm('确定要退出登录吗?', '提示', {
@@ -42,10 +43,8 @@ const logout = () => {
     cancelButtonText: '取消',
     type: 'warning',
   }).then(() => {
-    // 实际逻辑：清除 Token，然后跳转到登录页
-    localStorage.removeItem('userToken');
-    router.push('/login');
-    ElMessage.success('退出成功');
+    // 使用 store 的 logout 方法
+    userStore.logout();
   }).catch(() => {});
 };
 </script>

@@ -18,9 +18,9 @@ export interface RegisterParams {
 // 登录响应
 export interface LoginResponse {
   token: string;
-  userInfo: {
+  userVo: {
     id: string;
-    username: string;
+    userName: string;
     avatar?: string;
     email?: string;
     phone?: string;
@@ -32,7 +32,7 @@ export interface LoginResponse {
  */
 export const login = (data: LoginParams) => {
   return request<LoginResponse>({
-    url: '/api/auth/login',
+    url: '/v1/users/login',
     method: 'post',
     data
   });
