@@ -1,0 +1,353 @@
+<template>
+  <div class="login-container">
+    <div class="brand-section">
+      <div class="bg-overlay"></div>
+      <div class="brand-content">
+        <div class="logo">
+          <el-icon :size="40" color="#fff"><Apple /></el-icon>
+          <span>SmartNutri</span>
+        </div>
+        <h1 class="slogan">科学饮食，<br>遇 见 更 好 的 自 己。</h1>
+        <p class="sub-slogan">基于 AI 大模型的个性化膳食管理平台</p>
+        <div class="features">
+          <span class="tag"><el-icon><Camera /></el-icon> 拍照识菜</span>
+          <span class="tag"><el-icon><DataAnalysis /></el-icon> 热量监控</span>
+          <span class="tag"><el-icon><ChatDotRound /></el-icon> AI 顾问</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-wrapper">
+        <h2 class="welcome-text">
+          {{ isLogin ? '欢迎回来 👋' : '创建账户 🚀' }}
+        </h2>
+        <p class="tip-text">
+          {{ isLogin ? '请输入您的账号信息以登录平台' : '开启您的健康管理之旅' }}
+        </p>
+
+        <el-form
+          v-if="isLogin"
+          ref="loginFormRef"
+          :model="loginForm"
+          :rules="rules"
+          class="auth-form"
+          size="large"
+        >
+          <el-form-item prop="username">
+            <el-input 
+              v-model="loginForm.username" 
+              placeholder="用户名 / 手机号" 
+              prefix-icon="User"
+            />
+          </el-form-item>
+          <el-form-item prop="password">
+            <el-input 
+              v-model="loginForm.password" 
+              type="password" 
+              placeholder="密码" 
+              prefix-icon="Lock"
+              show-password
+            />
+          </el-form-item>
+          
+          <div class="form-options">
+            <el-checkbox v-model="loginForm.remember">记住我</el-checkbox>
+            <el-link type="primary" :underline="false">忘记密码？</el-link>
+          </div>
+
+          <el-button type="primary" class="submit-btn" :loading="loading" @click="handleLogin">
+            立即登录
+          </el-button>
+        </el-form>
+
+        <el-form
+          v-else
+          ref="registerFormRef"
+          :model="registerForm"
+          :rules="rules"
+          class="auth-form"
+          size="large"
+        >
+          <el-form-item prop="username">
+            <el-input 
+              v-model="registerForm.username" 
+              placeholder="设置用户名" 
+              prefix-icon="User"
+            />
+          </el-form-item>
+          <el-form-item prop="phone">
+            <el-input 
+              v-model="registerForm.phone" 
+              placeholder="手机号码" 
+              prefix-icon="Iphone"
+            />
+          </el-form-item>
+          <el-form-item prop="password">
+            <el-input 
+              v-model="registerForm.password" 
+              type="password" 
+              placeholder="设置密码" 
+              prefix-icon="Lock"
+              show-password
+            />
+          </el-form-item>
+
+          <el-button type="success" class="submit-btn" :loading="loading" @click="handleRegister">
+            立即注册
+          </el-button>
+        </el-form>
+
+        <div class="toggle-box">
+          <span>{{ isLogin ? '还没有账号？' : '已有账号？' }}</span>
+          <el-link type="primary" :underline="false" @click="toggleState">
+            {{ isLogin ? '去注册' : '去登录' }}
+          </el-link>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, reactive } from 'vue';
+import { useRouter } from 'vue-router';
+import { ElMessage } from 'element-plus';
+import { User, Lock, Apple, Camera, DataAnalysis, ChatDotRound, Iphone } from '@element-plus/icons-vue';
+
+const router = useRouter();
+const isLogin = ref(true); // 控制登录/注册切换
+const loading = ref(false);
+
+// 表单数据
+const loginForm = reactive({
+  username: '',
+  password: '',
+  remember: false
+});
+
+const registerForm = reactive({
+  username: '',
+  phone: '',
+  password: ''
+});
+
+// 表单校验规则
+const rules = {
+  username: [
+    { required: true, message: '请输入用户名', trigger: 'blur' },
+    { min: 3, message: '长度至少 3 个字符', trigger: 'blur' }
+  ],
+  password: [
+    { required: true, message: '请输入密码', trigger: 'blur' },
+    { min: 6, message: '密码长度不能少于 6 位', trigger: 'blur' }
+  ],
+  phone: [
+    { required: true, message: '请输入手机号', trigger: 'blur' },
+    { pattern: /^1[3-9]\d{9}$/, message: '手机号格式不正确', trigger: 'blur' }
+  ]
+};
+
+// 切换登录/注册状态
+const toggleState = () => {
+  isLogin.value = !isLogin.value;
+  // 清空表单验证状态（实际项目中可能需要调用 formRef.value.resetFields()）
+};
+
+// 模拟登录逻辑
+const handleLogin = () => {
+  // 这里暂时只做简单的非空判断，实际需要调用 formRef.validate
+  if (!loginForm.username || !loginForm.password) {
+    ElMessage.warning('请输入用户名和密码');
+    return;
+  }
+
+  loading.value = true;
+  
+  // 模拟接口请求延迟
+  setTimeout(() => {
+    loading.value = false;
+    ElMessage.success('登录成功，欢迎回来！');
+    // 存储 Token (模拟)
+    localStorage.setItem('userToken', 'mock-token-123456');
+    // 跳转到仪表盘
+    router.push('/dashboard');
+  }, 1500);
+};
+
+// 模拟注册逻辑
+const handleRegister = () => {
+  if (!registerForm.phone || !registerForm.password) {
+    ElMessage.warning('请填写完整信息');
+    return;
+  }
+  
+  loading.value = true;
+  setTimeout(() => {
+    loading.value = false;
+    ElMessage.success('注册成功，请登录');
+    isLogin.value = true; // 切换回登录页
+  }, 1500);
+};
+</script>
+
+<style scoped lang="scss">
+.login-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  background-color: #fff;
+  overflow: hidden;
+
+  // 左侧品牌区
+  .brand-section {
+    flex: 1;
+    position: relative;
+    background-image: url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=2053&auto=format&fit=crop'); // 使用 Unsplash 的健康食物图片
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 60px;
+    color: #fff;
+
+    // 移动端隐藏左侧
+    @media (max-width: 900px) {
+      display: none;
+    }
+
+    .bg-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      // 渐变蒙层，让文字更清晰，同时融入品牌色
+      background: linear-gradient(135deg, rgba(66, 185, 131, 0.9) 0%, rgba(36, 126, 88, 0.8) 100%);
+      z-index: 1;
+    }
+
+    .brand-content {
+      position: relative;
+      z-index: 2;
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 40px;
+      }
+
+      .slogan {
+        font-size: 48px;
+        line-height: 1.2;
+        font-weight: 800;
+        margin-bottom: 20px;
+        letter-spacing: 2px;
+      }
+
+      .sub-slogan {
+        font-size: 20px;
+        opacity: 0.9;
+        margin-bottom: 60px;
+      }
+
+      .features {
+        display: flex;
+        gap: 20px;
+        
+        .tag {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          background: rgba(255, 255, 255, 0.2);
+          padding: 8px 16px;
+          border-radius: 50px;
+          backdrop-filter: blur(10px);
+          font-size: 14px;
+        }
+      }
+    }
+  }
+
+  // 右侧表单区
+  .form-section {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    padding: 40px;
+
+    .form-wrapper {
+      width: 100%;
+      max-width: 420px;
+      
+      .welcome-text {
+        font-size: 32px;
+        color: #333;
+        margin-bottom: 10px;
+      }
+      
+      .tip-text {
+        color: #999;
+        margin-bottom: 40px;
+        font-size: 14px;
+      }
+
+      .auth-form {
+        // 自定义 Element 输入框样式，使其更大气
+        :deep(.el-input__wrapper) {
+          padding: 12px 15px;
+          border-radius: 8px;
+          box-shadow: 0 0 0 1px #dcdfe6 inset;
+          
+          &.is-focus {
+            box-shadow: 0 0 0 1px #42b983 inset !important;
+          }
+        }
+        
+        .submit-btn {
+          width: 100%;
+          padding: 22px 0;
+          font-size: 16px;
+          border-radius: 8px;
+          margin-top: 20px;
+          background-color: #42b983; // 品牌色
+          border-color: #42b983;
+          font-weight: bold;
+          letter-spacing: 1px;
+          transition: all 0.3s;
+
+          &:hover {
+            background-color: #3aa876;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(66, 185, 131, 0.3);
+          }
+        }
+      }
+
+      .form-options {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .toggle-box {
+        margin-top: 30px;
+        text-align: center;
+        font-size: 14px;
+        color: #666;
+
+        span {
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+}
+</style>
