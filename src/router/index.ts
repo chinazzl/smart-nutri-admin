@@ -38,6 +38,12 @@ export const asyncRoutes: Array<RouteRecordRaw> = [
         component: () => import("@/views/dashboard/index.vue"), // 暂时指向仪表盘页面
         meta: { title: "饮食记录", icon: "Dish" },
       },
+      {
+        path: "profile", // 对应 /profile
+        name: "Profile",
+        component: () => import("@/views/profile/index.vue"),
+        meta: { title: "健康档案", icon: "User" },
+      },
     ],
   },
 ];

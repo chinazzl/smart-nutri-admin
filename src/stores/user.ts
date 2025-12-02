@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { login as loginApi, logout as logoutApi, getUserInfo as getUserInfoApi, type LoginParams } from '@/api/auth';
 import router from '@/router';
 import { ElMessage } from 'element-plus';
+import { computed, reactive } from 'vue'
 
 export interface UserInfo {
   id: string;
@@ -11,6 +12,15 @@ export interface UserInfo {
   email?: string;
   phone?: string;
   role?: string;
+}
+// 定义类型接口
+export interface UserProfile {
+  gender: 'male' | 'female'
+  age: number
+  height: number // cm
+  weight: number // kg
+  activityLevel: number // 1.2 ~ 1.9 系数
+  goal: 'lose' | 'maintain' | 'gain' // 减脂/维持/增肌
 }
 
 export const useUserStore = defineStore('user', () => {
@@ -91,6 +101,61 @@ export const useUserStore = defineStore('user', () => {
     localStorage.removeItem('userInfo');
   };
 
+ // 1. 状态 State (默认值)
+  const profile = reactive<UserProfile>({
+    gender: 'male',
+    age: 25,
+    height: 175,
+    weight: 70,
+    activityLevel: 1.375, // 默认为轻度活动
+    goal: 'maintain'
+  })
+
+  // 2. 计算属性 Getters (自动计算核心指标)
+
+  // BMI 计算
+  const bmi = computed(() => {
+    const h = profile.height / 100
+    return Number((profile.weight / (h * h)).toFixed(1))
+  })
+
+  // BMR 基础代谢 (Mifflin-St Jeor 公式)
+  const bmr = computed(() => {
+    let base = (10 * profile.weight) + (6.25 * profile.height) - (5 * profile.age)
+    return profile.gender === 'male' ? Math.round(base + 5) : Math.round(base - 161)
+  })
+
+  // TDEE 每日总消耗 (BMR * 活动系数)
+  const tdee = computed(() => {
+    return Math.round(bmr.value * profile.activityLevel)
+  })
+
+  // 每日建议摄入热量 (根据目标调整)
+  const targetCalories = computed(() => {
+    switch (profile.goal) {
+      case 'lose': return tdee.value - 500 // 制造 500 热量缺口
+      case 'gain': return tdee.value + 300 // 制造 300 热量盈余
+      default: return tdee.value
+    }
+  })
+
+  // 宏观营养素建议 (简单算法：碳水50% 蛋白30% 脂肪20%)
+  const macros = computed(() => {
+    const total = targetCalories.value
+    return {
+      carbs: Math.round((total * 0.5) / 4), // 1g碳水=4kcal
+      protein: Math.round((total * 0.3) / 4), // 1g蛋白=4kcal
+      fat: Math.round((total * 0.2) / 9)    // 1g脂肪=9kcal
+    }
+  })
+
+  // 3. 动作 Actions
+  function saveProfile(newProfile: UserProfile) {
+    Object.assign(profile, newProfile)
+    // 这里可以添加调用后端 API 保存到数据库的逻辑
+    console.log('Profile saved:', profile)
+  }
+
   return {
     token,
     userInfo,
@@ -99,6 +164,13 @@ export const useUserStore = defineStore('user', () => {
     login,
     getUserInfo,
     logout,
-    resetUserInfo
+    resetUserInfo,
+    profile,
+    bmi,
+    bmr,
+    tdee,
+    targetCalories,
+    macros,
+    saveProfile
   };
 });
