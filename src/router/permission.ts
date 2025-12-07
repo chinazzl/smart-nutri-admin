@@ -1,18 +1,27 @@
-import router from './router';
+import router from './index';
 import { ElMessage } from 'element-plus';
-
+console.log('router permission loaded');
 // 白名单：不需要登录就可以访问的页面
 const whiteList = ['/login'];
 
+// 验证token是否有效的辅助函数
+const isValidToken = (token: string): boolean => {
+  if (!token) return false;
+  if(token ==='null' || token ==='undefined' || token ==='') return false;
+  // 这里可以添加更多的验证逻辑，例如解码 JWT 并检查过期时间
+  return true;
+}
+
 // 全局前置守卫
 router.beforeEach((to, from, next) => {
+  console.log('路由守卫：', to.path);
   // 设置页面标题
   document.title = to.meta.title ? `${to.meta.title} - 智能营养管理系统` : '智能营养管理系统';
   
   // 获取 token
   const token = localStorage.getItem('userToken');
   
-  if (token) {
+  if (isValidToken(token || '')) {
     // 已登录
     if (to.path === '/login') {
       // 如果已登录，访问登录页则跳转到首页

@@ -32,6 +32,8 @@ service.interceptors.request.use(
 );
 
 // 响应拦截器
+let isRefreshing = false;
+let failedQueue: any[] = [];
 service.interceptors.response.use(
   (response: AxiosResponse) => {
     const res = response.data;
@@ -68,19 +70,74 @@ service.interceptors.response.use(
     console.log("响应数据：", res)
     return res.data;
   },
-  (error) => {
-    console.error('响应错误：', error);
+  async (error) => {
+    // console.error('响应错误：', error);
     
-    // 处理网络错误
-    if (error.message.includes('timeout')) {
-      ElMessage.error('请求超时，请稍后重试');
-    } else if (error.message.includes('Network Error')) {
-      ElMessage.error('网络连接失败，请检查网络');
-    } else {
-      ElMessage.error(error.response?.data?.message || '服务器错误');
+    // // 处理网络错误
+    // if (error.message.includes('timeout')) {
+    //   ElMessage.error('请求超时，请稍后重试');
+    // } else if (error.message.includes('Network Error')) {
+    //   ElMessage.error('网络连接失败，请检查网络');
+    // } else {
+    //   ElMessage.error(error.response?.data?.message || '服务器错误');
+    // }
+    
+    // return Promise.reject(error);
+    const originalRequest = error.config
+    
+    // Token 过期，尝试刷新
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      if (isRefreshing) {
+        // 如果正在刷新，将请求加入队列
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject })
+        }).then(() => {
+          return service(originalRequest)
+        })
+      }
+
+      originalRequest._retry = true
+      isRefreshing = true
+
+      try {
+        const refreshToken = localStorage.getItem('refreshToken')
+        if (!refreshToken) {
+          throw new Error('No refresh token')
+        }
+
+        // 调用刷新 token 接口
+        const response = await axios.post('/api/auth/refresh', {
+          refreshToken
+        })
+
+        const { token, refreshToken: newRefreshToken } = response.data.data
+        
+        // 更新 token
+        localStorage.setItem('userToken', token)
+        localStorage.setItem('refreshToken', newRefreshToken)
+        
+        // 重试原请求
+        originalRequest.headers['Authorization'] = `Bearer ${token}`
+        
+        // 处理队列中的请求
+        failedQueue.forEach(({ resolve }) => {
+          resolve(service(originalRequest))
+        })
+        failedQueue = []
+        
+        return service(originalRequest)
+      } catch (refreshError) {
+        // 刷新失败，清除 token 并跳转登录
+        localStorage.removeItem('userToken')
+        localStorage.removeItem('refreshToken')
+        window.location.href = '/login'
+        return Promise.reject(refreshError)
+      } finally {
+        isRefreshing = false
+      }
     }
     
-    return Promise.reject(error);
+    return Promise.reject(error)
   }
 );
 
