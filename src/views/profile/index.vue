@@ -1,22 +1,25 @@
 <template>
   <div class="profile-container">
     <el-row :gutter="20">
-      
       <el-col :span="24" :lg="14">
         <el-card class="input-card" shadow="hover">
           <template #header>
             <div class="card-header">
               <span class="title">👤 身体档案设置</span>
-              <el-tag type="info" effect="plain">为了精准推荐，请如实填写</el-tag>
+              <el-tag type="info" effect="plain"
+                >为了精准推荐，请如实填写</el-tag
+              >
             </div>
           </template>
 
           <el-form :model="userStore.profile" label-position="top" size="large">
-            
             <el-row :gutter="20">
               <el-col :span="12">
                 <el-form-item label="性别">
-                  <el-radio-group v-model="userStore.profile.gender" class="gender-select">
+                  <el-radio-group
+                    v-model="userStore.profile.gender"
+                    class="gender-select"
+                  >
                     <el-radio-button label="male">
                       <el-icon><Male /></el-icon> 男士
                     </el-radio-button>
@@ -28,7 +31,12 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="年龄 (岁)">
-                  <el-input-number v-model="userStore.profile.age" :min="10" :max="100" style="width: 100%;" />
+                  <el-input-number
+                    v-model="userStore.profile.age"
+                    :min="10"
+                    :max="100"
+                    style="width: 100%"
+                  />
                 </el-form-item>
               </el-col>
             </el-row>
@@ -37,16 +45,32 @@
               <el-col :span="12">
                 <el-form-item label="身高 (cm)">
                   <div class="slider-input">
-                    <el-slider v-model="userStore.profile.height" :min="140" :max="220" vertical height="100px" />
-                    <span class="value-text">{{ userStore.profile.height }}</span>
+                    <el-slider
+                      v-model="userStore.profile.height"
+                      :min="140"
+                      :max="220"
+                      vertical
+                      height="100px"
+                    />
+                    <span class="value-text">{{
+                      userStore.profile.height
+                    }}</span>
                   </div>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item label="当前体重 (kg)">
                   <div class="slider-input">
-                    <el-slider v-model="userStore.profile.weight" :min="40" :max="150" vertical height="100px" />
-                    <span class="value-text">{{ userStore.profile.weight }}</span>
+                    <el-slider
+                      v-model="userStore.profile.weight"
+                      :min="40"
+                      :max="150"
+                      vertical
+                      height="100px"
+                    />
+                    <span class="value-text">{{
+                      userStore.profile.weight
+                    }}</span>
                   </div>
                 </el-form-item>
               </el-col>
@@ -55,11 +79,24 @@
             <el-divider />
 
             <el-form-item label="日常活动强度 (用于计算 TDEE)">
-              <el-select v-model="userStore.profile.activityLevel" placeholder="请选择" style="width: 100%;">
+              <el-select
+                v-model="userStore.profile.activityLevel"
+                placeholder="请选择"
+                style="width: 100%"
+              >
                 <el-option label="🛋️ 久坐 (几乎不运动)" :value="1.2" />
-                <el-option label="🚶 轻度活动 (每周运动 1-3 次)" :value="1.375" />
-                <el-option label="🏃 中度活跃 (每周运动 3-5 次)" :value="1.55" />
-                <el-option label="🏋️ 非常活跃 (每周运动 6-7 次)" :value="1.725" />
+                <el-option
+                  label="🚶 轻度活动 (每周运动 1-3 次)"
+                  :value="1.375"
+                />
+                <el-option
+                  label="🏃 中度活跃 (每周运动 3-5 次)"
+                  :value="1.55"
+                />
+                <el-option
+                  label="🏋️ 非常活跃 (每周运动 6-7 次)"
+                  :value="1.725"
+                />
               </el-select>
             </el-form-item>
 
@@ -71,7 +108,12 @@
               </el-radio-group>
             </el-form-item>
 
-            <el-button type="primary" class="save-btn" @click="handleSave" :loading="saving">
+            <el-button
+              type="primary"
+              class="save-btn"
+              @click="handleSave"
+              :loading="saving"
+            >
               保存并在云端同步
             </el-button>
           </el-form>
@@ -94,14 +136,14 @@
 
         <el-card class="result-card metrics-panel" shadow="hover">
           <h3 class="panel-title">身体数据分析</h3>
-          
+
           <div class="metric-item">
             <div class="metric-header">
               <span>BMI 指数</span>
               <span class="metric-value">{{ userStore.bmi }}</span>
             </div>
-            <el-progress 
-              :percentage="calculateBmiPercentage(userStore.bmi)" 
+            <el-progress
+              :percentage="calculateBmiPercentage(userStore.bmi)"
               :color="getBmiColor(userStore.bmi)"
               :format="() => getBmiLabel(userStore.bmi)"
               :stroke-width="12"
@@ -126,7 +168,12 @@
           <h3 class="panel-title">推荐三大营养素 (Macros)</h3>
           <div class="macros-container">
             <div class="macro-item">
-              <el-progress type="circle" :percentage="50" color="#e6a23c" :width="80">
+              <el-progress
+                type="circle"
+                :percentage="50"
+                color="#e6a23c"
+                :width="80"
+              >
                 <template #default>
                   <div class="macro-text">
                     <div class="grams">{{ userStore.macros.carbs }}g</div>
@@ -136,7 +183,12 @@
               </el-progress>
             </div>
             <div class="macro-item">
-              <el-progress type="circle" :percentage="30" color="#409eff" :width="80">
+              <el-progress
+                type="circle"
+                :percentage="30"
+                color="#409eff"
+                :width="80"
+              >
                 <template #default>
                   <div class="macro-text">
                     <div class="grams">{{ userStore.macros.protein }}g</div>
@@ -146,7 +198,12 @@
               </el-progress>
             </div>
             <div class="macro-item">
-              <el-progress type="circle" :percentage="20" color="#f56c6c" :width="80">
+              <el-progress
+                type="circle"
+                :percentage="20"
+                color="#f56c6c"
+                :width="80"
+              >
                 <template #default>
                   <div class="macro-text">
                     <div class="grams">{{ userStore.macros.fat }}g</div>
@@ -157,63 +214,59 @@
             </div>
           </div>
         </el-card>
-
       </el-col>
     </el-row>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { ElMessage } from 'element-plus'
-import { useUserStore } from '@/stores/user'
+import { ref } from "vue";
+import { useUserStore } from "@/stores/user";
 
-const userStore = useUserStore()
-const saving = ref(false)
+const userStore = useUserStore();
+const saving = ref(false);
 
 // 辅助函数：根据 Goal 返回中文
 const getGoalText = (goal: string) => {
   const map: Record<string, string> = {
-    lose: '热量缺口 -500',
-    maintain: '热量平衡',
-    gain: '热量盈余 +300'
-  }
-  return map[goal]
-}
+    lose: "热量缺口 -500",
+    maintain: "热量平衡",
+    gain: "热量盈余 +300",
+  };
+  return map[goal];
+};
 
 // 辅助函数：BMI 进度条计算
 const calculateBmiPercentage = (bmi: number) => {
   // 假设 15 是 0%，35 是 100%
-  let p = ((bmi - 15) / (35 - 15)) * 100
-  return Math.min(Math.max(p, 0), 100)
-}
+  let p = ((bmi - 15) / (35 - 15)) * 100;
+  return Math.min(Math.max(p, 0), 100);
+};
 
 const getBmiLabel = (bmi: number) => {
-  if (bmi < 18.5) return '偏瘦'
-  if (bmi < 24) return '正常'
-  if (bmi < 28) return '超重'
-  return '肥胖'
-}
+  if (bmi < 18.5) return "偏瘦";
+  if (bmi < 24) return "正常";
+  if (bmi < 28) return "超重";
+  return "肥胖";
+};
 
 const getBmiColor = (bmi: number) => {
-  if (bmi < 18.5) return '#e6a23c' // 黄
-  if (bmi < 24) return '#67c23a'  // 绿
-  if (bmi < 28) return '#e6a23c' // 黄
-  return '#f56c6c'                // 红
-}
+  if (bmi < 18.5) return "#e6a23c"; // 黄
+  if (bmi < 24) return "#67c23a"; // 绿
+  if (bmi < 28) return "#e6a23c"; // 黄
+  return "#f56c6c"; // 红
+};
 
-const handleSave = () => {
-  saving.value = true
-  // 模拟 API 调用
-  setTimeout(() => {
-    saving.value = false
-    ElMessage.success({
-      message: '健康档案已更新！AI 营养师已根据新数据调整方案。',
-      type: 'success',
-      duration: 3000
-    })
-  }, 1000)
-}
+const handleSave = async () => {
+  saving.value = true;
+  try {
+    await userStore.saveProfile(userStore.profile);
+  } catch (error) {
+    // 错误处理交由 store 或全局拦截器
+  } finally {
+    saving.value = false;
+  }
+};
 </script>
 
 <style scoped lang="scss">
@@ -245,7 +298,7 @@ const handleSave = () => {
     background-color: #f8fcfb;
     padding: 20px 0;
     border-radius: 8px;
-    
+
     .value-text {
       margin-top: 15px;
       font-weight: bold;
@@ -292,7 +345,7 @@ const handleSave = () => {
     font-size: 16px;
     opacity: 0.9;
   }
-  
+
   .number-group {
     margin: 15px 0;
     .number {
@@ -309,12 +362,16 @@ const handleSave = () => {
   .badge {
     display: inline-block;
     padding: 4px 12px;
-    background: rgba(255,255,255,0.2);
+    background: rgba(255, 255, 255, 0.2);
     border-radius: 20px;
     font-size: 14px;
-    
-    &.lose { color: #ffe6e6; }
-    &.gain { color: #e6f7ff; }
+
+    &.lose {
+      color: #ffe6e6;
+    }
+    &.gain {
+      color: #e6f7ff;
+    }
   }
 }
 
@@ -325,7 +382,7 @@ const handleSave = () => {
     font-size: 16px;
     color: #606266;
   }
-  
+
   .metric-item {
     margin-bottom: 25px;
     .metric-header {
@@ -344,14 +401,14 @@ const handleSave = () => {
   .stats-grid {
     display: flex;
     gap: 15px;
-    
+
     .stat-box {
       flex: 1;
       background-color: #f5f7fa;
       padding: 15px;
       border-radius: 8px;
       text-align: center;
-      
+
       .stat-label {
         display: block;
         font-size: 12px;
@@ -378,7 +435,7 @@ const handleSave = () => {
   display: flex;
   justify-content: space-around;
   padding: 10px 0;
-  
+
   .macro-text {
     display: flex;
     flex-direction: column;

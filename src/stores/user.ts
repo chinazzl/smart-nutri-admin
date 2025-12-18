@@ -6,6 +6,7 @@ import {
   getUserInfo as getUserInfoApi,
   type LoginParams,
 } from "@/api/auth";
+import { updateProfile, type UserProfile } from "@/api/user";
 import router from "@/router";
 import { ElMessage } from "element-plus";
 import { computed, reactive } from "vue";
@@ -19,14 +20,6 @@ export interface UserInfo {
   role?: string;
 }
 // 定义类型接口
-export interface UserProfile {
-  gender: "male" | "female";
-  age: number;
-  height: number; // cm
-  weight: number; // kg
-  activityLevel: number; // 1.2 ~ 1.9 系数
-  goal: "lose" | "maintain" | "gain"; // 减脂/维持/增肌
-}
 
 const isValidToken = (token: string | null): boolean => {
   if (!token) return false;
@@ -174,10 +167,21 @@ export const useUserStore = defineStore("user", () => {
   });
 
   // 3. 动作 Actions
-  function saveProfile(newProfile: UserProfile) {
-    Object.assign(profile, newProfile);
-    // 这里可以添加调用后端 API 保存到数据库的逻辑
-    console.log("Profile saved:", profile);
+  async function saveProfile(newProfile: UserProfile) {
+    try {
+      const res = await updateProfile(newProfile);
+      Object.assign(profile, newProfile);
+      // 如果后端返回了新的 profile，也可以在这里合并
+       ElMessage.success({
+        message: "健康档案已更新！AI 营养师已根据新数据调整方案。",
+        type: "success",
+        duration: 3000,
+      });
+      return res;
+    } catch (error) {
+       console.error("保存档案失败:", error);
+       throw error;
+    }
   }
 
   const checkLoginState = (): boolean => {
