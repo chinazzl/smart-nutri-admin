@@ -11,6 +11,16 @@ export interface UserProfile {
 }
 
 /**
+ * 获取用户身体档案
+ */
+export const getProfile = () => {
+  return request<UserProfile>({
+    url: '/v1/users/profile',
+    method: 'get'
+  });
+};
+
+/**
  * 更新用户身体档案
  */
 export const updateProfile = (data: UserProfile) => {

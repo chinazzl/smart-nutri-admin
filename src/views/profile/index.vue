@@ -1,5 +1,9 @@
 <template>
-  <div class="profile-container">
+  <div
+    class="profile-container"
+    v-loading="loading"
+    element-loading-text="加载健康档案中..."
+  >
     <el-row :gutter="20">
       <el-col :span="24" :lg="14">
         <el-card class="input-card" shadow="hover">
@@ -220,11 +224,24 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useUserStore } from "@/stores/user";
 
 const userStore = useUserStore();
 const saving = ref(false);
+const loading = ref(false);
+
+// 组件挂载时加载用户档案
+onMounted(async () => {
+  if (!userStore.profileLoaded) {
+    loading.value = true;
+    try {
+      await userStore.loadProfile();
+    } finally {
+      loading.value = false;
+    }
+  }
+});
 
 // 辅助函数：根据 Goal 返回中文
 const getGoalText = (goal: string) => {

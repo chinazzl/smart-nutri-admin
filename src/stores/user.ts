@@ -6,7 +6,7 @@ import {
   getUserInfo as getUserInfoApi,
   type LoginParams,
 } from "@/api/auth";
-import { updateProfile, type UserProfile } from "@/api/user";
+import { updateProfile, getProfile, type UserProfile } from "@/api/user";
 import router from "@/router";
 import { ElMessage } from "element-plus";
 import { computed, reactive } from "vue";
@@ -123,6 +123,9 @@ export const useUserStore = defineStore("user", () => {
     goal: "maintain",
   });
 
+  // 标记档案是否已从后端加载
+  const profileLoaded = ref(false);
+
   // 2. 计算属性 Getters (自动计算核心指标)
 
   // BMI 计算
@@ -167,6 +170,24 @@ export const useUserStore = defineStore("user", () => {
   });
 
   // 3. 动作 Actions
+  
+  /**
+   * 从后端加载用户档案
+   */
+  async function loadProfile() {
+    try {
+      const res = await getProfile();
+      // 更新 profile 数据
+      Object.assign(profile, res);
+      profileLoaded.value = true;
+      return res;
+    } catch (error) {
+      console.error("加载档案失败:", error);
+      // 如果加载失败，使用默认值，不抛出错误
+      profileLoaded.value = true;
+    }
+  }
+
   async function saveProfile(newProfile: UserProfile) {
     try {
       const res = await updateProfile(newProfile);
@@ -203,11 +224,13 @@ export const useUserStore = defineStore("user", () => {
     logout,
     resetUserInfo,
     profile,
+    profileLoaded,
     bmi,
     bmr,
     tdee,
     targetCalories,
     macros,
+    loadProfile,
     saveProfile,
     checkLoginState
   };
