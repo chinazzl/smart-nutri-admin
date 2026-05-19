@@ -4,7 +4,9 @@ import {
   login as loginApi,
   logout as logoutApi,
   getUserInfo as getUserInfoApi,
+  register as registerApi,
   type LoginParams,
+  type RegisterParams,
 } from "@/api/auth";
 import { updateProfile, getProfile, type UserProfile } from "@/api/user";
 import router from "@/router";
@@ -13,7 +15,7 @@ import { computed, reactive } from "vue";
 
 export interface UserInfo {
   id: string;
-  userName: string;
+  username: string;
   avatar?: string;
   email?: string;
   phone?: string;
@@ -53,8 +55,8 @@ export const useUserStore = defineStore("user", () => {
       const res = await loginApi(loginParams);
 
       // 保存 token 和用户信息
-      setToken(res.accessToken, res.refreshToken);
-      setUserInfo(res.userData.userVo);
+      setToken(res.data.accessToken, res.data.refreshToken);
+      setUserInfo(res.data.user);
 
       ElMessage.success("登录成功");
 
@@ -69,6 +71,18 @@ export const useUserStore = defineStore("user", () => {
       return res;
     } catch (error) {
       console.error("登录失败：", error);
+      throw error;
+    }
+  };
+
+  // 注册
+  const register = async (registerParams: RegisterParams) => {
+    try {
+      const res = await registerApi(registerParams);
+      ElMessage.success("注册成功，请登录");
+      return res;
+    } catch (error) {
+      console.error("注册失败：", error);
       throw error;
     }
   };
@@ -220,6 +234,7 @@ export const useUserStore = defineStore("user", () => {
     setToken,
     setUserInfo,
     login,
+    register,
     getUserInfo,
     logout,
     resetUserInfo,

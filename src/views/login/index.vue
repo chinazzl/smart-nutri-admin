@@ -71,17 +71,32 @@
                </el-form>
             </el-tab-pane>
             
-            <!-- 注册表单 (简化) -->
+            <!-- 注册表单 -->
             <el-tab-pane label="快速注册" name="register" v-if="isRegister">
-               <el-form :model="registerForm" size="large">
-                 <el-form-item>
+               <el-form ref="registerFormRef" :model="registerForm" :rules="registerRules" size="large">
+                 <el-form-item prop="username">
                   <el-input v-model="registerForm.username" placeholder="设置用户名" :prefix-icon="User" />
                 </el-form-item>
-                <el-form-item>
+                <el-form-item prop="phone">
                   <el-input v-model="registerForm.phone" placeholder="手机号码" :prefix-icon="Iphone" />
                 </el-form-item>
-                 <el-form-item>
-                  <el-input v-model="registerForm.password" type="password" placeholder="设置密码" :prefix-icon="Lock" />
+                <el-form-item prop="code" class="code-item">
+                  <el-input v-model="registerForm.code" placeholder="验证码" :prefix-icon="Message" />
+                  <el-button 
+                    class="send-btn" 
+                    type="primary" 
+                    link 
+                    :disabled="countdown > 0"
+                    @click="handleSendCode"
+                  >
+                    {{ countdown > 0 ? `${countdown}s后重试` : '获取验证码' }}
+                  </el-button>
+                </el-form-item>
+                 <el-form-item prop="password">
+                  <el-input v-model="registerForm.password" type="password" placeholder="设置密码" show-password :prefix-icon="Lock" />
+                </el-form-item>
+                <el-form-item prop="confirmPassword">
+                  <el-input v-model="registerForm.confirmPassword" type="password" placeholder="确认密码" show-password :prefix-icon="Lock" />
                 </el-form-item>
                </el-form>
             </el-tab-pane>
@@ -129,11 +144,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
+import { ref, reactive, onUnmounted } from 'vue';
 import { User, Lock, Iphone, Message, TrendCharts, ChatDotRound } from '@element-plus/icons-vue';
 import { useUserStore } from '@/stores/user';
 import { useRouter } from 'vue-router';
-import { ElMessage } from 'element-plus';
+import { ElMessage, type FormInstance } from 'element-plus';
+import { sendVerifyCode } from '@/api/auth';
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -143,6 +159,8 @@ const isRegister = ref(false);
 const activeTab = ref('account');
 const loading = ref(false);
 const rememberMe = ref(true);
+const countdown = ref(0);
+let timer: any = null;
 
 // 表单数据
 const loginForm = reactive({
@@ -155,15 +173,44 @@ const loginForm = reactive({
 const registerForm = reactive({
     username: '',
     phone: '',
-    password: ''
+    code: '',
+    password: '',
+    confirmPassword: ''
 });
 
-const loginFormRef = ref();
+const loginFormRef = ref<FormInstance>();
+const registerFormRef = ref<FormInstance>();
 
 // 验证规则
 const rules = {
-  username: [{ required: true, message: '请输入用户名',HN: 'blur' }],
+  username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
   password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+};
+
+const registerRules = {
+  username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+  phone: [
+    { required: true, message: '请输入手机号', trigger: 'blur' },
+    { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号', trigger: 'blur' }
+  ],
+  code: [{ required: true, message: '请输入验证码', trigger: 'blur' }],
+  password: [
+    { required: true, message: '请输入密码', trigger: 'blur' },
+    { min: 6, message: '密码不能少于6位', trigger: 'blur' }
+  ],
+  confirmPassword: [
+    { required: true, message: '请再次输入密码', trigger: 'blur' },
+    {
+      validator: (rule: any, value: any, callback: any) => {
+        if (value !== registerForm.password) {
+          callback(new Error('两次输入密码不一致'));
+        } else {
+          callback();
+        }
+      },
+      trigger: 'blur'
+    }
+  ]
 };
 
 // 切换登录/注册模式
@@ -204,14 +251,59 @@ const performLogin = async () => {
 }
 
 // 注册处理
-const handleRegister = () => {
-    loading.value = true;
-    setTimeout(() => {
-        loading.value = false;
-        ElMessage.success('注册成功，请登录');
+const handleRegister = async () => {
+  if (!registerFormRef.value) return;
+  await registerFormRef.value.validate(async (valid) => {
+    if (valid) {
+      loading.value = true;
+      try {
+        await userStore.register(registerForm);
+        // 清空表单
+        registerForm.username = '';
+        registerForm.phone = '';
+        registerForm.code = '';
+        registerForm.password = '';
+        registerForm.confirmPassword = '';
+        
         toggleMode();
-    }, 1500);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        loading.value = false;
+      }
+    }
+  });
 }
+
+// 发送验证码
+const handleSendCode = async () => {
+  if (!registerForm.phone) {
+    ElMessage.warning('请先输入手机号');
+    return;
+  }
+  if (!/^1[3-9]\d{9}$/.test(registerForm.phone)) {
+    ElMessage.warning('请输入正确的手机号');
+    return;
+  }
+
+  try {
+    await sendVerifyCode(registerForm.phone);
+    ElMessage.success('验证码已发送');
+    countdown.value = 60;
+    timer = setInterval(() => {
+      countdown.value--;
+      if (countdown.value <= 0) {
+        clearInterval(timer);
+      }
+    }, 1000);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+onUnmounted(() => {
+  if (timer) clearInterval(timer);
+});
 </script>
 
 <style scoped lang="scss">

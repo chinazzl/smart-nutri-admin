@@ -1,4 +1,4 @@
-import request from './request';
+import request from "./request";
 
 // 用户登录参数
 export interface LoginParams {
@@ -32,9 +32,9 @@ export interface LoginResponse {
  */
 export const login = (data: LoginParams) => {
   return request<LoginResponse>({
-    url: '/v1/users/login',
-    method: 'post',
-    data
+    url: "/api/auth/login",
+    method: "post",
+    data,
   });
 };
 
@@ -43,9 +43,9 @@ export const login = (data: LoginParams) => {
  */
 export const register = (data: RegisterParams) => {
   return request({
-    url: '/api/auth/register',
-    method: 'post',
-    data
+    url: "/api/auth/register",
+    method: "post",
+    data,
   });
 };
 
@@ -54,9 +54,9 @@ export const register = (data: RegisterParams) => {
  */
 export const sendVerifyCode = (phone: string) => {
   return request({
-    url: '/api/auth/send-code',
-    method: 'post',
-    data: { phone }
+    url: "/api/auth/send-code",
+    method: "post",
+    data: { phone },
   });
 };
 
@@ -65,8 +65,8 @@ export const sendVerifyCode = (phone: string) => {
  */
 export const logout = () => {
   return request({
-    url: '/api/auth/logout',
-    method: 'post'
+    url: "/api/auth/logout",
+    method: "post",
   });
 };
 
@@ -75,8 +75,8 @@ export const logout = () => {
  */
 export const getUserInfo = () => {
   return request({
-    url: '/api/auth/user-info',
-    method: 'get'
+    url: "/api/auth/user-info",
+    method: "post",
   });
 };
 
@@ -88,9 +88,9 @@ export const changePassword = (data: {
   newPassword: string;
 }) => {
   return request({
-    url: '/api/auth/change-password',
-    method: 'post',
-    data
+    url: "/api/auth/change-password",
+    method: "post",
+    data,
   });
 };
 
@@ -103,8 +103,8 @@ export const resetPassword = (data: {
   newPassword: string;
 }) => {
   return request({
-    url: '/api/auth/reset-password',
-    method: 'post',
-    data
+    url: "/api/auth/reset-password",
+    method: "post",
+    data,
   });
 };
