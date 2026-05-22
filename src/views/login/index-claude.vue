@@ -224,7 +224,7 @@ const registerForm = reactive({
   agree: false
 });
 
-const validatePhone = (rule: any, value: any, callback: any) => {
+const validatePhone = (_rule: any, value: any, callback: any) => {
   if (!value) {
     callback(new Error('请输入手机号'));
   } else if (!/^1[3-9]\d{9}$/.test(value)) {
@@ -234,7 +234,7 @@ const validatePhone = (rule: any, value: any, callback: any) => {
   }
 };
 
-const validateConfirmPassword = (rule: any, value: any, callback: any) => {
+const validateConfirmPassword = (_rule: any, value: any, callback: any) => {
   if (!value) {
     callback(new Error('请再次输入密码'));
   } else if (value !== registerForm.password) {
@@ -244,7 +244,7 @@ const validateConfirmPassword = (rule: any, value: any, callback: any) => {
   }
 };
 
-const validateAgree = (rule: any, value: any, callback: any) => {
+const validateAgree = (_rule: any, value: any, callback: any) => {
   if (!value) {
     callback(new Error('请阅读并同意用户协议'));
   } else {

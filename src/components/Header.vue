@@ -14,7 +14,7 @@
       <el-dropdown trigger="click">
         <span class="el-dropdown-link">
           <el-avatar :size="30" :src="userStore.userInfo?.avatar || 'https://cube.elemecdn.com/0/88/d8e7cbe79b76c0e5a8f4c3c3a44d0webp.webp'" />
-          <span class="username">{{ userStore.userInfo?.userName || 'User' }} </span>
+          <span class="username">{{ userStore.userInfo?.username || 'User' }} </span>
           <el-icon class="el-icon--right"><ArrowDown /></el-icon>
         </span>
         <template #dropdown>

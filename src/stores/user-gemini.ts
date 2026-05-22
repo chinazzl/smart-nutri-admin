@@ -1,11 +1,9 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 
 export const useUserStore = defineStore('user', () => {
   const token = ref<string | null>(localStorage.getItem('token'));
-  const router = useRouter();
 
   // 模拟登录动作
   const login = async (loginForm: any) => {

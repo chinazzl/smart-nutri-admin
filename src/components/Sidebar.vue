@@ -38,9 +38,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useRoute } from 'vue-router';
 
-const route = useRoute();
 const isCollapse = ref(false); // 控制侧边栏是否折叠
 
 const toggleCollapse = () => {

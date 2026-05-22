@@ -13,7 +13,7 @@ const isValidToken = (token: string): boolean => {
 }
 
 // 全局前置守卫
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _from, next) => {
   console.log('路由守卫：', to.path);
   // 设置页面标题
   document.title = to.meta.title ? `${to.meta.title} - 智能营养管理系统` : '智能营养管理系统';
@@ -44,8 +44,8 @@ router.beforeEach((to, from, next) => {
 });
 
 // 全局后置守卫
-router.afterEach((to, from) => {
+router.afterEach((to, _from) => {
   // 可以在这里做一些页面跳转后的处理
   // 例如：埋点统计、页面访问记录等
-  console.log('路由跳转：', from.path, '->', to.path);
-});
+  console.log('路由跳转：', _from.path, '->', to.path);
+});

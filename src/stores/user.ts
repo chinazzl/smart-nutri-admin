@@ -7,6 +7,7 @@ import {
   register as registerApi,
   type LoginParams,
   type RegisterParams,
+  type LoginResponse,
 } from "@/api/auth";
 import { updateProfile, getProfile, type UserProfile } from "@/api/user";
 import router from "@/router";
@@ -52,11 +53,22 @@ export const useUserStore = defineStore("user", () => {
   // 登录
   const login = async (loginParams: LoginParams) => {
     try {
-      const res = await loginApi(loginParams);
+      const res = await loginApi(loginParams) as unknown as LoginResponse;
+
+      // 兼容两种后端返回格式
+      const accessTok = res.accessToken ?? res.token ?? '';
+      const refreshTok = res.refreshToken ?? '';
+      const userObj = res.user ?? (res.userVo ? {
+        id: res.userVo.id,
+        username: res.userVo.userName,
+        avatar: res.userVo.avatar,
+        email: res.userVo.email,
+        phone: res.userVo.phone,
+      } : null);
 
       // 保存 token 和用户信息
-      setToken(res.data.accessToken, res.data.refreshToken);
-      setUserInfo(res.data.user);
+      setToken(accessTok, refreshTok);
+      if (userObj) setUserInfo(userObj as UserInfo);
 
       ElMessage.success("登录成功");
 
@@ -65,7 +77,7 @@ export const useUserStore = defineStore("user", () => {
 
       if (redirect && redirect !== "/login") {
         router.push(redirect);
-      }else {
+      } else {
         router.push("/dashboard");
       }
       return res;
@@ -91,7 +103,7 @@ export const useUserStore = defineStore("user", () => {
   const getUserInfo = async () => {
     try {
       const res = await getUserInfoApi();
-      setUserInfo(res);
+      setUserInfo(res as unknown as UserInfo);
       return res;
     } catch (error) {
       console.error("获取用户信息失败：", error);

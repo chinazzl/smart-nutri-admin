@@ -7,23 +7,33 @@ export interface LoginParams {
   rememberMe?: boolean;
 }
 
-// 用户注册参数
+// 用户注册参数（只需邮箱/手机号 + 密码）
 export interface RegisterParams {
-  username: string;
-  phone: string;
-  code: string;
+  account: string;  // 邮箱或手机号
   password: string;
 }
 
+
 // 登录响应
 export interface LoginResponse {
-  token: string;
-  userVo: {
+  // 兼容两种后端返回格式
+  token?: string;           // 方式 A
+  userVo?: {
     id: string;
     userName: string;
     avatar?: string;
     email?: string;
     phone?: string;
+  };
+  accessToken?: string;     // 方式 B
+  refreshToken?: string;
+  user?: {
+    id: string;
+    username: string;
+    avatar?: string;
+    email?: string;
+    phone?: string;
+    role?: string;
   };
 }
 
@@ -50,7 +60,7 @@ export const register = (data: RegisterParams) => {
 };
 
 /**
- * 发送验证码
+ * 发送验证码（保留，供登录手机号模式使用）
  */
 export const sendVerifyCode = (phone: string) => {
   return request({
@@ -59,6 +69,8 @@ export const sendVerifyCode = (phone: string) => {
     data: { phone },
   });
 };
+
+
 
 /**
  * 退出登录
