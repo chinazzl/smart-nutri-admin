@@ -1,5 +1,5 @@
-// tianai-captcha 官方 TAC SDK 全局类型声明
-// SDK 通过 CDN 引入，挂载在 window.TAC
+// tianai-captcha 官方 Web SDK 全局类型声明
+// SDK 通过 load.min.js 引入，挂载 window.loadTAC
 
 interface TACConfig {
   /** 后端生成验证码接口地址 */
@@ -12,21 +12,29 @@ interface TACConfig {
   validSuccess?: (res: any, c: any, tac: TACInstance) => void;
   /** 验证失败回调 */
   validFail?: (res: any, c: any, tac: TACInstance) => void;
-  /** 验证码刷新回调 */
-  execute?: (res: any, c: any, tac: TACInstance) => void;
+  /** 刷新按钮回调 */
+  btnRefreshFun?: (el: HTMLElement, tac: TACInstance) => void;
+  /** 关闭按钮回调 */
+  btnCloseFun?: (el: HTMLElement, tac: TACInstance) => void;
 }
 
 interface TACInstance {
+  /** 初始化验证码 */
+  init(): void;
   /** 销毁验证码弹窗 */
   destroyWindow(): void;
   /** 重新加载验证码 */
   reloadCaptcha(): void;
 }
 
-interface TACConstructor {
-  new(config: TACConfig): {
-    init(): TACInstance;
-  };
+interface TACStyleConfig {
+  logoUrl?: string;
 }
 
-declare const TAC: TACConstructor;
+interface Window {
+  loadTAC?: (
+    staticUrl: string,
+    config: TACConfig,
+    style?: TACStyleConfig
+  ) => Promise<TACInstance>;
+}

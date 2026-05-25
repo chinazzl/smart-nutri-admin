@@ -2,8 +2,11 @@ import request from "./request";
 
 // 用户登录参数
 export interface LoginParams {
-  username: string;
-  password: string;
+  username?: string;
+  password?: string;
+  phone?: string;
+  code?: string;
+  validToken?: string;
   rememberMe?: boolean;
 }
 

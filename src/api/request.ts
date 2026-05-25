@@ -68,10 +68,11 @@ service.interceptors.response.use(
     
     // 返回数据
     console.log("响应数据：", res)
+    console.log("[Axios Response Interceptor] 响应 code:", res.code, "数据:", res);
     return res.data;
   },
   async (error) => {
-    // console.error('响应错误：', error);
+    console.error("[Axios Error Interceptor] 请求失败:", error.message, "状态:", error.response?.status, "响应:", error.response?.data);
     
     // // 处理网络错误
     // if (error.message.includes('timeout')) {
