@@ -53,10 +53,7 @@ export const useUserStore = defineStore("user", () => {
   // 登录
   const login = async (loginParams: LoginParams) => {
     try {
-      console.log("[Store] 调用 loginApi，参数:", loginParams);
       const res = await loginApi(loginParams) as unknown as LoginResponse;
-      console.log("[Store] loginApi 返回结果:", res);
-      console.log("[Store] 当前 localStorage userToken:", localStorage.getItem('userToken'));
 
       // 兼容两种后端返回格式
       const accessTok = res.accessToken ?? res.token ?? '';
@@ -85,7 +82,6 @@ export const useUserStore = defineStore("user", () => {
       }
       return res;
     } catch (error) {
-      console.error("登录失败：", error);
       throw error;
     }
   };

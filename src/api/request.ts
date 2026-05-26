@@ -4,8 +4,8 @@ import router from '@/router';
 
 // 创建 axios 实例
 const service: AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || '', // API 基础路径
-  timeout: 15000, // 请求超时时间
+  baseURL: import.meta.env.VITE_API_BASE_URL || '',
+  timeout: 15000,
   headers: {
     'Content-Type': 'application/json;charset=UTF-8'
   }
@@ -15,7 +15,6 @@ const service: AxiosInstance = axios.create({
 service.interceptors.request.use(
   (config) => {
     console.log("请求配置：", config)
-    // 从 localStorage 获取 token
     const token = localStorage.getItem('userToken');
     
     if (token) {
@@ -67,23 +66,9 @@ service.interceptors.response.use(
     }
     
     // 返回数据
-    console.log("响应数据：", res)
-    console.log("[Axios Response Interceptor] 响应 code:", res.code, "数据:", res);
     return res.data;
   },
   async (error) => {
-    console.error("[Axios Error Interceptor] 请求失败:", error.message, "状态:", error.response?.status, "响应:", error.response?.data);
-    
-    // // 处理网络错误
-    // if (error.message.includes('timeout')) {
-    //   ElMessage.error('请求超时，请稍后重试');
-    // } else if (error.message.includes('Network Error')) {
-    //   ElMessage.error('网络连接失败，请检查网络');
-    // } else {
-    //   ElMessage.error(error.response?.data?.message || '服务器错误');
-    // }
-    
-    // return Promise.reject(error);
     const originalRequest = error.config
     
     // Token 过期，尝试刷新

@@ -6,7 +6,7 @@ export interface LoginParams {
   password?: string;
   phone?: string;
   code?: string;
-  validToken?: string;
+  captchaToken?: string;
   rememberMe?: boolean;
 }
 
@@ -45,7 +45,7 @@ export interface LoginResponse {
  */
 export const login = (data: LoginParams) => {
   return request<LoginResponse>({
-    url: "/api/auth/login",
+    url: "/auth/login",
     method: "post",
     data,
   });
@@ -56,7 +56,7 @@ export const login = (data: LoginParams) => {
  */
 export const register = (data: RegisterParams) => {
   return request({
-    url: "/api/auth/register",
+    url: "/auth/register",
     method: "post",
     data,
   });
@@ -67,7 +67,7 @@ export const register = (data: RegisterParams) => {
  */
 export const sendVerifyCode = (phone: string) => {
   return request({
-    url: "/api/auth/send-code",
+    url: "/auth/send-code",
     method: "post",
     data: { phone },
   });
@@ -80,7 +80,7 @@ export const sendVerifyCode = (phone: string) => {
  */
 export const logout = () => {
   return request({
-    url: "/api/auth/logout",
+    url: "/auth/logout",
     method: "post",
   });
 };
@@ -90,7 +90,7 @@ export const logout = () => {
  */
 export const getUserInfo = () => {
   return request({
-    url: "/api/auth/user-info",
+    url: "/auth/user-info",
     method: "post",
   });
 };
@@ -103,7 +103,7 @@ export const changePassword = (data: {
   newPassword: string;
 }) => {
   return request({
-    url: "/api/auth/change-password",
+    url: "/auth/change-password",
     method: "post",
     data,
   });
@@ -118,7 +118,7 @@ export const resetPassword = (data: {
   newPassword: string;
 }) => {
   return request({
-    url: "/api/auth/reset-password",
+    url: "/auth/reset-password",
     method: "post",
     data,
   });

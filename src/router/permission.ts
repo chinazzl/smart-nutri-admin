@@ -14,29 +14,20 @@ const isValidToken = (token: string): boolean => {
 
 // 全局前置守卫
 router.beforeEach((to, _from, next) => {
-  console.log('路由守卫：', to.path);
-  // 设置页面标题
   document.title = to.meta.title ? `${to.meta.title} - 智能营养管理系统` : '智能营养管理系统';
-  
-  // 获取 token
+
   const token = localStorage.getItem('userToken');
-  
+
   if (isValidToken(token || '')) {
-    // 已登录
     if (to.path === '/login') {
-      // 如果已登录，访问登录页则跳转到首页
       next({ path: '/' });
     } else {
-      // 正常访问其他页面
       next();
     }
   } else {
-    // 未登录
     if (whiteList.includes(to.path)) {
-      // 在白名单中，直接访问
       next();
     } else {
-      // 不在白名单中，跳转到登录页
       ElMessage.warning('请先登录');
       next(`/login?redirect=${to.path}`);
     }
@@ -48,4 +39,4 @@ router.afterEach((to, _from) => {
   // 可以在这里做一些页面跳转后的处理
   // 例如：埋点统计、页面访问记录等
   console.log('路由跳转：', _from.path, '->', to.path);
-});
+});

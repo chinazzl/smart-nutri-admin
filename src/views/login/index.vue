@@ -371,9 +371,7 @@ const initTAC = () => {
             validCaptchaUrl: captchaCheckUrl,
             bindEl: "#captcha-container",
             validSuccess: (res, _config, currentTac) => {
-                console.log("[TAC] validSuccess called, res:", res);
                 const token = extractCaptchaToken(res);
-                console.log("[TAC] extracted token:", token);
 
                 // 用 setTimeout 把登录延迟到下一个宏任务，避开 TAC 内部的回调链
                 setTimeout(() => {
@@ -412,10 +410,9 @@ const initTAC = () => {
 
 const extractCaptchaToken = (res: any): string | undefined => {
     return (
-        res?.data?.validToken ||
+        res?.data?.captchaToken ||
         res?.data?.token ||
-        res?.data?.id ||
-        res?.validToken ||
+        res?.captchaToken ||
         res?.token ||
         res?.id
     );
@@ -423,7 +420,7 @@ const extractCaptchaToken = (res: any): string | undefined => {
 
 /** 验证通过后执行登录 */
 let isLoggingIn = false;
-const performLogin = async (validToken?: string) => {
+const performLogin = async (captchaToken?: string) => {
     if (isLoggingIn) {
         console.warn("[Login] 登录已在进行中，忽略重复调用");
         return;
@@ -431,19 +428,17 @@ const performLogin = async (validToken?: string) => {
     isLoggingIn = true;
 
     loading.value = true;
-    console.log("[Login] performLogin called, validToken:", validToken);
     try {
-        const result = await userStore.login({
+        await userStore.login({
             username: loginForm.username,
             password: loginForm.password,
             phone: loginForm.phone,
             code: loginForm.code,
-            validToken,
+            captchaToken,
             rememberMe: rememberMe.value,
         });
-        console.log("[Login] userStore.login succeeded, result:", result);
     } catch (error) {
-        console.error("[Login] userStore.login failed:", error);
+        console.error("登录失败：", error);
     } finally {
         loading.value = false;
         isLoggingIn = false;
