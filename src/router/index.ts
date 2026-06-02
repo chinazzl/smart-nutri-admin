@@ -3,23 +3,36 @@ import {
   createWebHashHistory,
   type RouteRecordRaw,
 } from "vue-router";
-
 import Layout from "@/layout/index.vue";
 
-// 不需要Layout框架的页面，如登录、404等
 const constantRoutes: Array<RouteRecordRaw> = [
   {
     path: "/login",
     name: "Login",
-    // 懒加载：访问的时候才加载文件，提升性能
     component: () => import("@/views/login/index.vue"),
-    meta: {
-      title: "登录",
-    },
+    meta: { title: "登录" },
   },
 ];
 
-// 业务路由
+export type RouteRole = 'admin' | 'user' | 'all';
+
+export interface MenuItem {
+  path: string;
+  name: string;
+  title: string;
+  icon: string;
+  roles: RouteRole[];
+}
+
+export const MENU_CONFIG: MenuItem[] = [
+  { path: '/dashboard', name: 'Dashboard', title: '仪表盘', icon: 'DataBoard', roles: ['all'] },
+  { path: '/nutrition', name: 'Nutrition', title: '饮食日记', icon: 'Dish', roles: ['user'] },
+  { path: '/activity', name: 'Activity', title: '运动追踪', icon: 'Bicycle', roles: ['user'] },
+  { path: '/ai-assistant', name: 'AiAssistant', title: 'AI健康助手', icon: 'ChatDotRound', roles: ['user'] },
+  { path: '/profile', name: 'Profile', title: '健康档案', icon: 'User', roles: ['all'] },
+  { path: '/user-management', name: 'UserManagement', title: '用户管理', icon: 'Grid', roles: ['admin'] },
+];
+
 export const asyncRoutes: Array<RouteRecordRaw> = [
   {
     path: "/",
@@ -30,19 +43,37 @@ export const asyncRoutes: Array<RouteRecordRaw> = [
         path: "dashboard",
         name: "Dashboard",
         component: () => import("@/views/dashboard/index.vue"),
-        meta: { title: "仪表盘", icon: "DataBoard" }, // meta 信息用于面包屑和侧边栏
+        meta: { title: "仪表盘", icon: "DataBoard", roles: ['all'] },
       },
       {
-        path: "diet-record",
-        name: "DietRecord",
-        component: () => import("@/views/dashboard/index.vue"), // 暂时指向仪表盘页面
-        meta: { title: "饮食记录", icon: "Dish" },
+        path: "nutrition",
+        name: "Nutrition",
+        component: () => import("@/views/nutrition/index.vue"),
+        meta: { title: "饮食日记", icon: "Dish", roles: ['user'] },
       },
       {
-        path: "profile", // 对应 /profile
+        path: "activity",
+        name: "Activity",
+        component: () => import("@/views/activity/index.vue"),
+        meta: { title: "运动追踪", icon: "Bicycle", roles: ['user'] },
+      },
+      {
+        path: "ai-assistant",
+        name: "AiAssistant",
+        component: () => import("@/views/ai-assistant/index.vue"),
+        meta: { title: "AI健康助手", icon: "ChatDotRound", roles: ['user'] },
+      },
+      {
+        path: "profile",
         name: "Profile",
         component: () => import("@/views/profile/index.vue"),
-        meta: { title: "健康档案", icon: "User" },
+        meta: { title: "健康档案", icon: "User", roles: ['all'] },
+      },
+      {
+        path: "user-management",
+        name: "UserManagement",
+        component: () => import("@/views/admin/user-management.vue"),
+        meta: { title: "用户管理", icon: "Grid", roles: ['admin'] },
       },
     ],
   },
@@ -50,7 +81,6 @@ export const asyncRoutes: Array<RouteRecordRaw> = [
 
 const router = createRouter({
   history: createWebHashHistory(),
-  //合并路由
   routes: constantRoutes.concat(asyncRoutes),
 });
 

@@ -2,7 +2,7 @@
  <template>
   <el-container class="app-wrapper">
     <el-aside class="sidebar-container" :width="sidebarWidth">
-      <Sidebar />
+      <Sidebar @collapse="onCollapse" />
     </el-aside>
     
     <el-container class="main-container">
@@ -24,16 +24,15 @@
 <script setup lang="ts">
 import Sidebar from '../components/Sidebar.vue';
 import Header from '../components/Header.vue';
-import { computed } from 'vue';
+import { ref, computed } from 'vue';
 
-// 简单实现宽度联动（从 Sidebar 中获取 isCollapse 的状态在实际项目中需用 Pinia 或 Emit 共享）
-// 为了简化，这里先写死一个宽度，实际项目中需要用 Pinia 状态管理
-const sidebarWidth = computed(() => {
-    // 默认展开宽度 210px，折叠宽度 64px (Element Plus 默认值)
-    // 这里的宽度应与 Sidebar.vue 中的样式 width: 210px 保持一致
-    // 理想情况应从 Sidebar 内部获取状态
-    return '210px'; 
-});
+const isCollapse = ref(false);
+
+const sidebarWidth = computed(() => (isCollapse.value ? '64px' : '210px'));
+
+function onCollapse(val: boolean) {
+  isCollapse.value = val;
+}
 </script>
 
 <style scoped lang="scss">

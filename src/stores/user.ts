@@ -20,9 +20,66 @@ export interface UserInfo {
   avatar?: string;
   email?: string;
   phone?: string;
-  role?: string;
+  role: 'admin' | 'user';
 }
-// 定义类型接口
+
+const isValidToken = (token: string | null): boolean => {
+  if (!token) return false;
+  if (token === "null" || token === "undefined" || token === "") return false;
+  return true;
+};
+
+// Mock 演示账号
+const MOCK_ACCOUNTS: Record<string, { password: string; user: UserInfo }> = {
+  admin: {
+    password: 'admin123',
+    user: { id: 'mock-admin-001', username: '管理员', role: 'admin', avatar: '' },
+  },
+  user: {
+    password: 'user123',
+    user: { id: 'mock-user-001', username: '张三', role: 'user', avatar: '' },
+  },
+};
+
+// 系统用户列表（用于用户管理）
+export interface SystemUser extends UserInfo {
+  status: 'active' | 'disabled';
+  createdAt: string;
+  profile?: {
+    gender: string;
+    age: number;
+    height: number;
+    weight: number;
+    activityLevel: number;
+    goal: string;
+  };
+}
+
+const SYSTEM_USERS_KEY = 'smart_nutri_system_users';
+const DEFAULT_SYSTEM_USERS: SystemUser[] = [
+  { id: 'mock-admin-001', username: '管理员', role: 'admin', status: 'active', createdAt: '2024-01-01T08:00:00Z' },
+  { id: 'mock-user-001', username: '张三', role: 'user', status: 'active', createdAt: '2024-01-15T09:30:00Z', profile: { gender: 'male', age: 28, height: 175, weight: 72, activityLevel: 1.375, goal: 'maintain' } },
+  { id: 'mock-user-002', username: '李四', role: 'user', status: 'active', createdAt: '2024-02-01T10:00:00Z', profile: { gender: 'female', age: 24, height: 162, weight: 55, activityLevel: 1.2, goal: 'lose' } },
+  { id: 'mock-user-003', username: '王五', role: 'user', status: 'active', createdAt: '2024-03-10T14:20:00Z', profile: { gender: 'male', age: 35, height: 180, weight: 85, activityLevel: 1.55, goal: 'lose' } },
+  { id: 'mock-user-004', username: '赵六', role: 'user', status: 'disabled', createdAt: '2024-04-05T11:15:00Z', profile: { gender: 'female', age: 30, height: 165, weight: 60, activityLevel: 1.375, goal: 'maintain' } },
+];
+
+export function getSystemUsers(): SystemUser[] {
+  try {
+    const raw = localStorage.getItem(SYSTEM_USERS_KEY);
+    if (!raw) {
+      localStorage.setItem(SYSTEM_USERS_KEY, JSON.stringify(DEFAULT_SYSTEM_USERS));
+      return DEFAULT_SYSTEM_USERS;
+    }
+    return JSON.parse(raw);
+  } catch {
+    return DEFAULT_SYSTEM_USERS;
+  }
+}
+
+export function saveSystemUsers(users: SystemUser[]) {
+  localStorage.setItem(SYSTEM_USERS_KEY, JSON.stringify(users));
+}
 
 const isValidToken = (token: string | null): boolean => {
   if (!token) return false;
@@ -50,8 +107,32 @@ export const useUserStore = defineStore("user", () => {
     localStorage.setItem("userInfo", JSON.stringify(info));
   };
 
-  // 登录
+  // 登录（支持 Mock 账号与真实 API）
   const login = async (loginParams: LoginParams) => {
+    // Mock 账号拦截：本地验证并注入 role
+    if (loginParams.username && loginParams.password) {
+      const mock = MOCK_ACCOUNTS[loginParams.username];
+      if (mock && mock.password === loginParams.password) {
+        const systemUsers = getSystemUsers();
+        const systemUser = systemUsers.find((u) => u.id === mock.user.id);
+        if (systemUser && systemUser.status === 'disabled') {
+          ElMessage.error('该账号已被禁用，请联系管理员');
+          throw new Error('账号已被禁用');
+        }
+        const mockToken = `mock_token_${Date.now()}`;
+        setToken(mockToken, mockToken);
+        setUserInfo(mock.user);
+        ElMessage.success('登录成功（演示账号）');
+        const redirect = router.currentRoute.value.query.redirect as string;
+        if (redirect && redirect !== '/login') {
+          router.push(redirect);
+        } else {
+          router.push('/dashboard');
+        }
+        return { accessToken: mockToken, user: mock.user };
+      }
+    }
+
     try {
       const res = await loginApi(loginParams) as unknown as LoginResponse;
 
@@ -112,8 +193,12 @@ export const useUserStore = defineStore("user", () => {
 
   // 退出登录
   const logout = async () => {
-    try {
-      await logoutApi();
+    const isMock = token.value.startsWith('mock_token_');
+    if (!isMock) {
+      try {
+        await logoutApi();
+      } catch {}
+    }
     } catch (error) {
       console.error("退出登录失败：", error);
     } finally {

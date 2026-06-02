@@ -1,0 +1,493 @@
+{
+  "foods": [
+    {
+      "id": "oatmeal",
+      "name": "燕麦片",
+      "category": "主食",
+      "unit": "g",
+      "perHundred": { "calories": 389, "protein": 16.9, "carbs": 66.3, "fat": 6.9, "fiber": 8.5 },
+      "defaultWeight": 50,
+      "tags": ["clean", "high-fiber"]
+    },
+    {
+      "id": "brown-rice",
+      "name": "糙米饭",
+      "category": "主食",
+      "unit": "g",
+      "perHundred": { "calories": 111, "protein": 2.6, "carbs": 23, "fat": 0.8, "fiber": 1.8 },
+      "defaultWeight": 200,
+      "tags": ["clean", "whole-grain"]
+    },
+    {
+      "id": "white-rice",
+      "name": "白米饭",
+      "category": "主食",
+      "unit": "g",
+      "perHundred": { "calories": 116, "protein": 2.6, "carbs": 25.9, "fat": 0.3, "fiber": 0.3 },
+      "defaultWeight": 200,
+      "tags": []
+    },
+    {
+      "id": "sweet-potato",
+      "name": "红薯",
+      "category": "主食",
+      "unit": "g",
+      "perHundred": { "calories": 99, "protein": 1.1, "carbs": 23.6, "fat": 0.1, "fiber": 1.6 },
+      "defaultWeight": 150,
+      "tags": ["clean", "low-fat", "high-fiber"]
+    },
+    {
+      "id": "corn",
+      "name": "玉米",
+      "category": "主食",
+      "unit": "g",
+      "perHundred": { "calories": 112, "protein": 4.0, "carbs": 22.8, "fat": 1.2, "fiber": 2.9 },
+      "defaultWeight": 150,
+      "tags": ["clean"]
+    },
+    {
+      "id": "whole-wheat-bread",
+      "name": "全麦面包",
+      "category": "主食",
+      "unit": "片",
+      "perHundred": { "calories": 247, "protein": 13.4, "carbs": 41.0, "fat": 3.4, "fiber": 6.0 },
+      "defaultWeight": 60,
+      "tags": ["whole-grain"]
+    },
+    {
+      "id": "chicken-breast",
+      "name": "鸡胸肉",
+      "category": "肉类",
+      "unit": "g",
+      "perHundred": { "calories": 133, "protein": 31.0, "carbs": 0.0, "fat": 1.2, "fiber": 0 },
+      "defaultWeight": 150,
+      "tags": ["clean", "high-protein", "low-fat", "low-carb"]
+    },
+    {
+      "id": "beef-tenderloin",
+      "name": "牛里脊",
+      "category": "肉类",
+      "unit": "g",
+      "perHundred": { "calories": 150, "protein": 26.0, "carbs": 0.0, "fat": 4.5, "fiber": 0 },
+      "defaultWeight": 150,
+      "tags": ["clean", "high-protein"]
+    },
+    {
+      "id": "pork-tenderloin",
+      "name": "猪里脊",
+      "category": "肉类",
+      "unit": "g",
+      "perHundred": { "calories": 143, "protein": 26.5, "carbs": 0.0, "fat": 3.5, "fiber": 0 },
+      "defaultWeight": 150,
+      "tags": ["clean", "high-protein"]
+    },
+    {
+      "id": "salmon",
+      "name": "三文鱼",
+      "category": "肉类",
+      "unit": "g",
+      "perHundred": { "calories": 208, "protein": 20.0, "carbs": 0.0, "fat": 13.0, "fiber": 0 },
+      "defaultWeight": 120,
+      "tags": ["clean", "high-protein", "omega-3"]
+    },
+    {
+      "id": "shrimp",
+      "name": "虾仁",
+      "category": "肉类",
+      "unit": "g",
+      "perHundred": { "calories": 99, "protein": 24.0, "carbs": 0.2, "fat": 0.3, "fiber": 0 },
+      "defaultWeight": 100,
+      "tags": ["clean", "high-protein", "low-fat", "low-carb"]
+    },
+    {
+      "id": "egg",
+      "name": "水煮蛋",
+      "category": "肉类",
+      "unit": "个",
+      "perHundred": { "calories": 151, "protein": 12.6, "carbs": 1.1, "fat": 10.6, "fiber": 0 },
+      "defaultWeight": 50,
+      "tags": ["clean", "high-protein"]
+    },
+    {
+      "id": "tofu",
+      "name": "北豆腐",
+      "category": "肉类",
+      "unit": "g",
+      "perHundred": { "calories": 101, "protein": 8.1, "carbs": 2.0, "fat": 5.7, "fiber": 0.4 },
+      "defaultWeight": 150,
+      "tags": ["clean", "plant-protein"]
+    },
+    {
+      "id": "broccoli",
+      "name": "西兰花",
+      "category": "蔬菜",
+      "unit": "g",
+      "perHundred": { "calories": 34, "protein": 2.8, "carbs": 6.6, "fat": 0.4, "fiber": 2.6 },
+      "defaultWeight": 150,
+      "tags": ["clean", "low-calorie", "high-fiber"]
+    },
+    {
+      "id": "spinach",
+      "name": "菠菜",
+      "category": "蔬菜",
+      "unit": "g",
+      "perHundred": { "calories": 23, "protein": 2.9, "carbs": 3.6, "fat": 0.4, "fiber": 2.2 },
+      "defaultWeight": 100,
+      "tags": ["clean", "low-calorie", "iron-rich"]
+    },
+    {
+      "id": "tomato",
+      "name": "番茄",
+      "category": "蔬菜",
+      "unit": "g",
+      "perHundred": { "calories": 18, "protein": 0.9, "carbs": 3.9, "fat": 0.2, "fiber": 1.2 },
+      "defaultWeight": 150,
+      "tags": ["clean", "low-calorie"]
+    },
+    {
+      "id": "cucumber",
+      "name": "黄瓜",
+      "category": "蔬菜",
+      "unit": "g",
+      "perHundred": { "calories": 16, "protein": 0.7, "carbs": 3.6, "fat": 0.1, "fiber": 0.5 },
+      "defaultWeight": 200,
+      "tags": ["clean", "low-calorie"]
+    },
+    {
+      "id": "carrot",
+      "name": "胡萝卜",
+      "category": "蔬菜",
+      "unit": "g",
+      "perHundred": { "calories": 41, "protein": 1.0, "carbs": 9.6, "fat": 0.2, "fiber": 2.8 },
+      "defaultWeight": 100,
+      "tags": ["clean"]
+    },
+    {
+      "id": "bell-pepper",
+      "name": "彩椒",
+      "category": "蔬菜",
+      "unit": "g",
+      "perHundred": { "calories": 26, "protein": 1.0, "carbs": 6.0, "fat": 0.3, "fiber": 2.1 },
+      "defaultWeight": 100,
+      "tags": ["clean", "low-calorie"]
+    },
+    {
+      "id": "mushroom",
+      "name": "口蘑",
+      "category": "蔬菜",
+      "unit": "g",
+      "perHundred": { "calories": 24, "protein": 3.1, "carbs": 3.3, "fat": 0.3, "fiber": 2.5 },
+      "defaultWeight": 100,
+      "tags": ["clean", "low-calorie"]
+    },
+    {
+      "id": "asparagus",
+      "name": "芦笋",
+      "category": "蔬菜",
+      "unit": "g",
+      "perHundred": { "calories": 20, "protein": 2.2, "carbs": 3.9, "fat": 0.1, "fiber": 2.1 },
+      "defaultWeight": 100,
+      "tags": ["clean", "low-calorie"]
+    },
+    {
+      "id": "apple",
+      "name": "苹果",
+      "category": "水果",
+      "unit": "个",
+      "perHundred": { "calories": 52, "protein": 0.3, "carbs": 13.8, "fat": 0.2, "fiber": 2.4 },
+      "defaultWeight": 200,
+      "tags": ["clean", "low-fat"],
+      "glycemicIndex": "medium"
+    },
+    {
+      "id": "banana",
+      "name": "香蕉",
+      "category": "水果",
+      "unit": "根",
+      "perHundred": { "calories": 93, "protein": 1.4, "carbs": 22.8, "fat": 0.2, "fiber": 1.7 },
+      "defaultWeight": 120,
+      "tags": ["clean"],
+      "glycemicIndex": "high"
+    },
+    {
+      "id": "orange",
+      "name": "橙子",
+      "category": "水果",
+      "unit": "个",
+      "perHundred": { "calories": 47, "protein": 0.9, "carbs": 11.8, "fat": 0.1, "fiber": 2.4 },
+      "defaultWeight": 180,
+      "tags": ["clean", "vitamin-c"]
+    },
+    {
+      "id": "blueberry",
+      "name": "蓝莓",
+      "category": "水果",
+      "unit": "g",
+      "perHundred": { "calories": 57, "protein": 0.7, "carbs": 14.5, "fat": 0.3, "fiber": 2.4 },
+      "defaultWeight": 100,
+      "tags": ["clean", "antioxidant"]
+    },
+    {
+      "id": "kiwi",
+      "name": "猕猴桃",
+      "category": "水果",
+      "unit": "个",
+      "perHundred": { "calories": 61, "protein": 1.1, "carbs": 14.7, "fat": 0.5, "fiber": 2.6 },
+      "defaultWeight": 100,
+      "tags": ["clean", "vitamin-c"]
+    },
+    {
+      "id": "grapefruit",
+      "name": "葡萄柚",
+      "category": "水果",
+      "unit": "半个",
+      "perHundred": { "calories": 42, "protein": 0.8, "carbs": 10.7, "fat": 0.1, "fiber": 1.6 },
+      "defaultWeight": 130,
+      "tags": ["clean", "low-calorie"]
+    },
+    {
+      "id": "milk",
+      "name": "纯牛奶",
+      "category": "奶制品",
+      "unit": "ml",
+      "perHundred": { "calories": 61, "protein": 3.0, "carbs": 4.8, "fat": 3.2, "fiber": 0 },
+      "defaultWeight": 250,
+      "tags": ["clean"]
+    },
+    {
+      "id": "skim-milk",
+      "name": "脱脂牛奶",
+      "category": "奶制品",
+      "unit": "ml",
+      "perHundred": { "calories": 34, "protein": 3.4, "carbs": 5.0, "fat": 0.1, "fiber": 0 },
+      "defaultWeight": 250,
+      "tags": ["clean", "low-fat", "high-protein"]
+    },
+    {
+      "id": "greek-yogurt",
+      "name": "希腊酸奶",
+      "category": "奶制品",
+      "unit": "g",
+      "perHundred": { "calories": 97, "protein": 9.0, "carbs": 3.6, "fat": 5.0, "fiber": 0 },
+      "defaultWeight": 150,
+      "tags": ["clean", "high-protein", "probiotic"]
+    },
+    {
+      "id": "cottage-cheese",
+      "name": "茅屋奶酪",
+      "category": "奶制品",
+      "unit": "g",
+      "perHundred": { "calories": 98, "protein": 11.1, "carbs": 3.4, "fat": 4.3, "fiber": 0 },
+      "defaultWeight": 150,
+      "tags": ["clean", "high-protein"]
+    },
+    {
+      "id": "almond",
+      "name": "杏仁",
+      "category": "坚果",
+      "unit": "g",
+      "perHundred": { "calories": 579, "protein": 21.2, "carbs": 21.6, "fat": 49.9, "fiber": 12.5 },
+      "defaultWeight": 25,
+      "tags": ["clean", "healthy-fat"]
+    },
+    {
+      "id": "walnut",
+      "name": "核桃",
+      "category": "坚果",
+      "unit": "g",
+      "perHundred": { "calories": 654, "protein": 15.2, "carbs": 13.7, "fat": 65.2, "fiber": 6.7 },
+      "defaultWeight": 25,
+      "tags": ["clean", "omega-3"]
+    },
+    {
+      "id": "mixed-nuts",
+      "name": "每日坚果",
+      "category": "坚果",
+      "unit": "g",
+      "perHundred": { "calories": 567, "protein": 16.0, "carbs": 20.0, "fat": 50.0, "fiber": 8.0 },
+      "defaultWeight": 25,
+      "tags": ["clean", "healthy-fat"]
+    },
+    {
+      "id": "green-tea",
+      "name": "绿茶",
+      "category": "饮品",
+      "unit": "ml",
+      "perHundred": { "calories": 1, "protein": 0.0, "carbs": 0.2, "fat": 0.0, "fiber": 0 },
+      "defaultWeight": 300,
+      "tags": ["clean", "low-calorie", "zero"]
+    },
+    {
+      "id": "black-tea",
+      "name": "红茶",
+      "category": "饮品",
+      "unit": "ml",
+      "perHundred": { "calories": 1, "protein": 0.1, "carbs": 0.3, "fat": 0.0, "fiber": 0 },
+      "defaultWeight": 300,
+      "tags": ["clean", "zero"]
+    },
+    {
+      "id": "black-coffee",
+      "name": "黑咖啡",
+      "category": "饮品",
+      "unit": "ml",
+      "perHundred": { "calories": 2, "protein": 0.1, "carbs": 0.0, "fat": 0.0, "fiber": 0 },
+      "defaultWeight": 250,
+      "tags": ["clean", "zero", "low-calorie"]
+    },
+    {
+      "id": "soy-milk",
+      "name": "豆浆",
+      "category": "饮品",
+      "unit": "ml",
+      "perHundred": { "calories": 33, "protein": 3.0, "carbs": 1.8, "fat": 1.6, "fiber": 0.3 },
+      "defaultWeight": 300,
+      "tags": ["clean", "plant-protein"]
+    },
+    {
+      "id": "coconut-water",
+      "name": "椰子水",
+      "category": "饮品",
+      "unit": "ml",
+      "perHundred": { "calories": 19, "protein": 0.7, "carbs": 3.7, "fat": 0.2, "fiber": 1.1 },
+      "defaultWeight": 300,
+      "tags": ["clean", "low-calorie", "electrolyte"]
+    },
+    {
+      "id": "avocado",
+      "name": "牛油果",
+      "category": "水果",
+      "unit": "个",
+      "perHundred": { "calories": 160, "protein": 2.0, "carbs": 8.5, "fat": 14.7, "fiber": 6.7 },
+      "defaultWeight": 100,
+      "tags": ["clean", "healthy-fat"]
+    },
+    {
+      "id": "steamed-egg",
+      "name": "蒸蛋",
+      "category": "肉类",
+      "unit": "份",
+      "perHundred": { "calories": 138, "protein": 11.5, "carbs": 1.8, "fat": 9.3, "fiber": 0 },
+      "defaultWeight": 150,
+      "tags": ["clean", "high-protein"]
+    },
+    {
+      "id": "roasted-chicken",
+      "name": "烤鸡胸",
+      "category": "肉类",
+      "unit": "g",
+      "perHundred": { "calories": 165, "protein": 28.0, "carbs": 0.0, "fat": 5.0, "fiber": 0 },
+      "defaultWeight": 150,
+      "tags": ["clean", "high-protein"]
+    },
+    {
+      "id": "beef-stew",
+      "name": "红烧肉",
+      "category": "肉类",
+      "unit": "g",
+      "perHundred": { "calories": 248, "protein": 12.0, "carbs": 6.5, "fat": 18.5, "fiber": 0 },
+      "defaultWeight": 150,
+      "tags": []
+    },
+    {
+      "id": "fish-steamed",
+      "name": "清蒸鱼",
+      "category": "肉类",
+      "unit": "g",
+      "perHundred": { "calories": 93, "protein": 18.0, "carbs": 0.0, "fat": 2.0, "fiber": 0 },
+      "defaultWeight": 150,
+      "tags": ["clean", "high-protein", "low-fat"]
+    },
+    {
+      "id": "veggie-salad",
+      "name": "蔬菜沙拉",
+      "category": "蔬菜",
+      "unit": "份",
+      "perHundred": { "calories": 18, "protein": 1.5, "carbs": 2.8, "fat": 0.2, "fiber": 2.0 },
+      "defaultWeight": 200,
+      "tags": ["clean", "low-calorie", "low-fat"]
+    },
+    {
+      "id": "greek-salad",
+      "name": "希腊沙拉",
+      "category": "蔬菜",
+      "unit": "份",
+      "perHundred": { "calories": 120, "protein": 5.0, "carbs": 6.0, "fat": 8.0, "fiber": 2.0 },
+      "defaultWeight": 250,
+      "tags": ["clean"]
+    },
+    {
+      "id": "protein-powder",
+      "name": "蛋白粉",
+      "category": "营养补剂",
+      "unit": "勺",
+      "perHundred": { "calories": 380, "protein": 80.0, "carbs": 8.0, "fat": 3.0, "fiber": 0 },
+      "defaultWeight": 30,
+      "tags": ["high-protein", "supplement"]
+    },
+    {
+      "id": "beef-noodles",
+      "name": "牛肉拉面",
+      "category": "主食",
+      "unit": "份",
+      "perHundred": { "calories": 140, "protein": 5.0, "carbs": 24.0, "fat": 2.5, "fiber": 1.0 },
+      "defaultWeight": 500,
+      "tags": []
+    },
+    {
+      "id": "dumpling",
+      "name": "水饺",
+      "category": "主食",
+      "unit": "个",
+      "perHundred": { "calories": 242, "protein": 9.0, "carbs": 25.0, "fat": 11.0, "fiber": 1.0 },
+      "defaultWeight": 150,
+      "tags": []
+    },
+    {
+      "id": "fried-egg",
+      "name": "煎蛋",
+      "category": "肉类",
+      "unit": "个",
+      "perHundred": { "calories": 196, "protein": 13.0, "carbs": 1.0, "fat": 15.0, "fiber": 0 },
+      "defaultWeight": 60,
+      "tags": []
+    },
+    {
+      "id": "oat-milk-porridge",
+      "name": "燕麦牛奶粥",
+      "category": "主食",
+      "unit": "份",
+      "perHundred": { "calories": 120, "protein": 5.0, "carbs": 20.0, "fat": 2.5, "fiber": 2.0 },
+      "defaultWeight": 300,
+      "tags": ["clean", "high-fiber"]
+    },
+    {
+      "id": "yogurt-cup",
+      "name": "酸奶杯",
+      "category": "奶制品",
+      "unit": "杯",
+      "perHundred": { "calories": 90, "protein": 4.5, "carbs": 13.0, "fat": 1.5, "fiber": 0 },
+      "defaultWeight": 200,
+      "tags": ["clean", "probiotic"]
+    },
+    {
+      "id": "dark-chocolate",
+      "name": "黑巧克力",
+      "category": "零食",
+      "unit": "g",
+      "perHundred": { "calories": 546, "protein": 5.0, "carbs": 60.0, "fat": 31.0, "fiber": 7.0 },
+      "defaultWeight": 20,
+      "tags": ["antioxidant"],
+      "glycemicIndex": "low"
+    },
+    {
+      "id": "seaweed",
+      "name": "海苔",
+      "category": "零食",
+      "unit": "包",
+      "perHundred": { "calories": 35, "protein": 5.0, "carbs": 4.0, "fat": 0.3, "fiber": 1.0 },
+      "defaultWeight": 15,
+      "tags": ["clean", "low-calorie", "mineral-rich"]
+    }
+  ]
+}

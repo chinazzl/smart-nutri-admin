@@ -1,29 +1,54 @@
-import router from './index';
+import router, { MENU_CONFIG } from './index';
 import { ElMessage } from 'element-plus';
-console.log('router permission loaded');
-// 白名单：不需要登录就可以访问的页面
+import { useUserStore } from '@/stores/user';
+
 const whiteList = ['/login'];
 
-// 验证token是否有效的辅助函数
 const isValidToken = (token: string): boolean => {
   if (!token) return false;
-  if(token ==='null' || token ==='undefined' || token ==='') return false;
-  // 这里可以添加更多的验证逻辑，例如解码 JWT 并检查过期时间
+  if (token === 'null' || token === 'undefined' || token === '') return false;
   return true;
+};
+
+function getUserRole(): 'admin' | 'user' | null {
+  try {
+    const raw = localStorage.getItem('userInfo');
+    if (!raw) return null;
+    const info = JSON.parse(raw);
+    return info.role ?? null;
+  } catch {
+    return null;
+  }
 }
 
-// 全局前置守卫
 router.beforeEach((to, _from, next) => {
-  document.title = to.meta.title ? `${to.meta.title} - 智能营养管理系统` : '智能营养管理系统';
+  document.title = to.meta.title
+    ? `${to.meta.title} - 智能营养管理系统`
+    : '智能营养管理系统';
 
   const token = localStorage.getItem('userToken');
 
   if (isValidToken(token || '')) {
     if (to.path === '/login') {
       next({ path: '/' });
-    } else {
-      next();
+      return;
     }
+
+    // 角色权限检查
+    const role = getUserRole();
+    const allowedRoles = (to.meta.roles as string[] | undefined) ?? ['all'];
+
+    const hasAccess =
+      allowedRoles.includes('all') ||
+      (role && allowedRoles.includes(role));
+
+    if (!hasAccess) {
+      ElMessage.warning('无权限访问该资源，将跳转至仪表盘');
+      next('/dashboard');
+      return;
+    }
+
+    next();
   } else {
     if (whiteList.includes(to.path)) {
       next();
@@ -34,9 +59,6 @@ router.beforeEach((to, _from, next) => {
   }
 });
 
-// 全局后置守卫
-router.afterEach((to, _from) => {
-  // 可以在这里做一些页面跳转后的处理
-  // 例如：埋点统计、页面访问记录等
-  console.log('路由跳转：', _from.path, '->', to.path);
+router.afterEach((_to, _from) => {
+  // 路由跳转后处理
 });
