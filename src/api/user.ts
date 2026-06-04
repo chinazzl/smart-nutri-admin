@@ -12,6 +12,8 @@ export interface UserProfile {
 
 /**
  * 获取用户身体档案
+ * TODO 后端接口：GET /v1/users/profile
+ * 响应：{ code: 200, data: UserProfile }
  */
 export const getProfile = () => {
   return request<UserProfile>({
@@ -22,11 +24,14 @@ export const getProfile = () => {
 
 /**
  * 更新用户身体档案
+ * TODO 后端接口：PUT /v1/users/profile
+ * 请求体：UserProfile
+ * 响应：{ code: 200, data: UserProfile }
  */
 export const updateProfile = (data: UserProfile) => {
   return request({
     url: '/v1/users/profile',
-    method: 'post',
+    method: 'put',
     data
   });
 };

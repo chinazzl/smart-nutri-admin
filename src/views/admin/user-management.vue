@@ -281,6 +281,7 @@ const profileTdee = computed(() => {
   return Math.round(bmr * profileDrawer.user.profile.activityLevel);
 });
 
+// TODO 后端接口：GET /v1/admin/users/:id/weekly-stats，返回本周营养数据后替换以下 mock 值
 const weeklyNutrition = ref(0);
 const weeklyBurned = ref(0);
 

@@ -29,7 +29,8 @@ const isValidToken = (token: string | null): boolean => {
   return true;
 };
 
-// Mock 演示账号
+// Mock 演示账号（后端实现后删除）
+// TODO: 后端登录接口上线后，删除以下 MOCK_ACCOUNTS 及 src/stores/user.ts 中的 Mock 账号拦截逻辑
 const MOCK_ACCOUNTS: Record<string, { password: string; user: UserInfo }> = {
   admin: {
     password: 'admin123',
@@ -42,6 +43,7 @@ const MOCK_ACCOUNTS: Record<string, { password: string; user: UserInfo }> = {
 };
 
 // 系统用户列表（用于用户管理）
+// TODO 后端接口：GET /v1/admin/users，后端返回用户列表后替换为真实 API 调用
 export interface SystemUser extends UserInfo {
   status: 'active' | 'disabled';
   createdAt: string;
@@ -64,6 +66,7 @@ const DEFAULT_SYSTEM_USERS: SystemUser[] = [
   { id: 'mock-user-004', username: '赵六', role: 'user', status: 'disabled', createdAt: '2024-04-05T11:15:00Z', profile: { gender: 'female', age: 30, height: 165, weight: 60, activityLevel: 1.375, goal: 'maintain' } },
 ];
 
+// TODO 后端接口：GET /v1/admin/users，返回后用真实 API 替换 localStorage 逻辑
 export function getSystemUsers(): SystemUser[] {
   try {
     const raw = localStorage.getItem(SYSTEM_USERS_KEY);
@@ -77,15 +80,11 @@ export function getSystemUsers(): SystemUser[] {
   }
 }
 
+// TODO 后端接口：PATCH /v1/admin/users/:id/status 和 PATCH /v1/admin/users/:id/role，
+// 后端实现后替换为真实 API 调用（见 src/api/admin.ts）
 export function saveSystemUsers(users: SystemUser[]) {
   localStorage.setItem(SYSTEM_USERS_KEY, JSON.stringify(users));
 }
-
-const isValidToken = (token: string | null): boolean => {
-  if (!token) return false;
-  if (token === "null" || token === "undefined" || token === "") return false;
-  return true;
-};
 
 export const useUserStore = defineStore("user", () => {
   // 状态
@@ -108,6 +107,7 @@ export const useUserStore = defineStore("user", () => {
   };
 
   // 登录（支持 Mock 账号与真实 API）
+  // TODO: 后端登录接口上线后，删除以下 Mock 账号拦截逻辑（111-134行），只保留真实 API 调用
   const login = async (loginParams: LoginParams) => {
     // Mock 账号拦截：本地验证并注入 role
     if (loginParams.username && loginParams.password) {
@@ -199,20 +199,14 @@ export const useUserStore = defineStore("user", () => {
         await logoutApi();
       } catch {}
     }
-    } catch (error) {
-      console.error("退出登录失败：", error);
-    } finally {
-      // 清除本地数据
-      token.value = "";
-      refreshToken.value = "";
-      userInfo.value = null;
-      localStorage.removeItem("userToken");
-      localStorage.removeItem("userInfo");
-
-      // 跳转到登录页
-      router.push("/login");
-      ElMessage.success("已退出登录");
-    }
+    // 清除本地数据
+    token.value = "";
+    refreshToken.value = "";
+    userInfo.value = null;
+    localStorage.removeItem("userToken");
+    localStorage.removeItem("userInfo");
+    router.push("/login");
+    ElMessage.success("已退出登录");
   };
 
   // 重置用户信息
@@ -318,7 +312,7 @@ export const useUserStore = defineStore("user", () => {
   const checkLoginState = (): boolean => {
     const currentToken = localStorage.getItem("userToken");
     if (!isValidToken(currentToken)) {
-      resetUserInfo
+      resetUserInfo();
       return false;
     }
     return true;

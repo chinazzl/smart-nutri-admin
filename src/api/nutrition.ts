@@ -1,4 +1,18 @@
-import type { Food, DietLog, MonthlyNutritionData, MealType, NutritionInfo, calcNutrition } from '@/types/nutrition';
+/**
+ * 饮食记录 API（localStorage Mock 实现）
+ *
+ * TODO: 后端接口实现后，替换为 src/api/nutrition-real.ts 中的真实 API。
+ * 真实 API 调用示例：
+ *   import { getDietLogs, addDietLog, updateDietLog, deleteDietLog, getMonthlyDietData } from '@/api/nutrition-real';
+ *
+ * 切换步骤：
+ * 1. 后端实现 /v1/diet/* 接口
+ * 2. 修改 src/stores/nutrition.ts，将 import 从 '@/api/nutrition' 改为 '@/api/nutrition-real'
+ * 3. 确保所有函数签名与真实 API 匹配（注意：后端可能返回完整 Food 对象，也可能是 foodId）
+ * 4. 删除本文件
+ */
+import type { Food, DietLog, MonthlyNutritionData, MealType, NutritionInfo } from '@/types/nutrition';
+import { calcNutrition } from '@/types/nutrition';
 import foodsData from '@/data/foods.json';
 
 const STORAGE_KEY = 'smart_nutri_diet';

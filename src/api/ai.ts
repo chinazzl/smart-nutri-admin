@@ -1,6 +1,17 @@
+/**
+ * AI 聊天 API（localStorage Mock 实现）
+ *
+ * TODO: 后端接口实现后，替换为 src/api/ai-real.ts 中的真实 API。
+ * 真实 API 调用示例：
+ *   import { sendMessageToAi } from '@/api/ai-real';
+ *
+ * 切换步骤：
+ * 1. 后端实现 /v1/ai/* 接口
+ * 2. 修改 src/stores/chat.ts 中的 apiSendMessage，从 '@/api/ai' 导入 mock，
+ *    改为 '@/api/ai-real' 并调用 sendMessageToAi
+ * 3. 删除本文件
+ */
 import type { ChatSession, ChatMessage, AiContext } from '@/types/ai';
-
-const STORAGE_KEY = 'smart_nutri_ai_sessions';
 const MAX_MESSAGES_PER_SESSION = 50;
 
 function getStorage(): ChatSession[] {

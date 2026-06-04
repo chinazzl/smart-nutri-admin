@@ -1,3 +1,15 @@
+/**
+ * 运动记录 API（localStorage Mock 实现）
+ *
+ * TODO: 后端接口实现后，替换为 src/api/activity-real.ts 中的真实 API。
+ * 真实 API 调用示例：
+ *   import { getActivityByDate, addExercise, deleteExercise, addStretch } from '@/api/activity-real';
+ *
+ * 切换步骤：
+ * 1. 后端实现 /v1/activity/* 接口
+ * 2. 修改 src/stores/activity.ts，将 import 从 '@/api/activity' 改为 '@/api/activity-real'
+ * 3. 删除本文件
+ */
 import type { ActivityLog, ActivityData, StretchSession } from '@/types/activity';
 import { BUILTIN_EXERCISES, calcCalories } from '@/types/activity';
 
@@ -84,7 +96,7 @@ export async function deleteExerciseLog(logId: string, date: string): Promise<vo
   if (!day) return;
   const idx = day.exercises.findIndex((l: ActivityLog) => l.id === logId);
   if (idx === -1) return;
-  const log = day.exercises[idx];
+  const log = day.exercises[idx]!;
   day.totalDuration -= log.duration;
   day.totalCalories -= log.calories;
   day.exercises.splice(idx, 1);

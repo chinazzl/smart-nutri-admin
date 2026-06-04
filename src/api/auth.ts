@@ -42,6 +42,9 @@ export interface LoginResponse {
 
 /**
  * 用户登录
+ * TODO 后端接口：POST /auth/login
+ * 请求体：{ username?, password?, phone?, code? }
+ * 响应：{ code: 200, data: LoginResponse }
  */
 export const login = (data: LoginParams) => {
   return request<LoginResponse>({
@@ -53,6 +56,9 @@ export const login = (data: LoginParams) => {
 
 /**
  * 用户注册
+ * TODO 后端接口：POST /auth/register
+ * 请求体：{ account, password }
+ * 响应：{ code: 200, data: { id, ... } }
  */
 export const register = (data: RegisterParams) => {
   return request({
@@ -64,6 +70,9 @@ export const register = (data: RegisterParams) => {
 
 /**
  * 发送验证码（保留，供登录手机号模式使用）
+ * TODO 后端接口：POST /auth/send-code
+ * 请求体：{ phone }
+ * 响应：{ code: 200 }
  */
 export const sendVerifyCode = (phone: string) => {
   return request({
@@ -77,6 +86,8 @@ export const sendVerifyCode = (phone: string) => {
 
 /**
  * 退出登录
+ * TODO 后端接口：POST /auth/logout
+ * 响应：{ code: 200 }
  */
 export const logout = () => {
   return request({
@@ -87,6 +98,8 @@ export const logout = () => {
 
 /**
  * 获取用户信息
+ * TODO 后端接口：GET /auth/user-info
+ * 响应：{ code: 200, data: UserInfo }
  */
 export const getUserInfo = () => {
   return request({
@@ -97,6 +110,9 @@ export const getUserInfo = () => {
 
 /**
  * 修改密码
+ * TODO 后端接口：POST /auth/change-password
+ * 请求体：{ oldPassword, newPassword }
+ * 响应：{ code: 200 }
  */
 export const changePassword = (data: {
   oldPassword: string;
@@ -111,6 +127,9 @@ export const changePassword = (data: {
 
 /**
  * 重置密码（忘记密码）
+ * TODO 后端接口：POST /auth/reset-password
+ * 请求体：{ phone, code, newPassword }
+ * 响应：{ code: 200 }
  */
 export const resetPassword = (data: {
   phone: string;

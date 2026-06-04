@@ -395,6 +395,7 @@ function getUserRole(): 'admin' | 'user' {
   }
 }
 
+// TODO 后端接口：GET /v1/admin/stats，后端返回真实统计数据后替换以下 mock 数据
 const systemStats = reactive({
   dau: 128,
   aiCalls: 342,
@@ -402,6 +403,7 @@ const systemStats = reactive({
   totalUsers: 256,
 });
 
+// TODO 后端接口：GET /v1/admin/recent-users，后端返回真实活跃用户列表后替换以下 mock 数据
 const recentUsers = ref([
   { username: '张三', action: '完成拉伸打卡', time: '10:32', calories: 1890 },
   { username: '李四', action: '添加饮食记录', time: '10:15', calories: 1450 },
@@ -422,6 +424,7 @@ function initCharts() {
         d.setDate(d.getDate() - (6 - i));
         return `${d.getMonth() + 1}/${d.getDate()}`;
       });
+// TODO 后端接口：GET /v1/admin/user-registrations?days=7，后端返回近7天注册数据后替换以下 mock 数组
       const registrations = [28, 35, 42, 31, 45, 38, 52];
 
       userChart.setOption({
@@ -455,6 +458,7 @@ function initCharts() {
           itemStyle: { borderRadius: 8, borderColor: '#fff', borderWidth: 2 },
           label: { show: false },
           emphasis: { label: { show: true, fontSize: 14, fontWeight: 'bold' } },
+// TODO 后端接口：GET /v1/admin/feature-usage，后端返回真实使用分布数据后替换以下 mock 数据
           data: [
             { value: 335, name: '饮食记录', itemStyle: { color: '#409EFF' } },
             { value: 234, name: '运动打卡', itemStyle: { color: '#67C23A' } },
